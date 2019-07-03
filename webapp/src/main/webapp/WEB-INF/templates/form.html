@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Time for a Thyme form</title>
+    </head>
+    <body>
+        <h1>Time for a Thyme form</h1>
+        <form action="#" th:object="${contact}" 
+              th:action="@{/form.htm}" method="post">
+            <fieldset>
+                <label for="name">Username:</label>
+                <input type="text" id="name" name="name"/><br/>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone"/><br/>
+                <label for="age">Age</label>
+                <input type="text" id="age" name="age"/><br/>
+                <input type="submit" value="Register"/>
+            </fieldset>
+        <ul th:if="${#fields.hasErrors('*')}">
+  <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+</ul>
+        </form>
+    </body>
+</html>

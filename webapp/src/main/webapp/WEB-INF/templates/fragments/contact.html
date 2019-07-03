@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Contact fragment</title>
+    </head>
+    <body>
+        <!-- when the new version of thymeleaf / layout comes out, we can use th:block for this -->
+        <div th:fragment="contact">
+
+            <div class="contactSummary">
+
+                <div th:if="${contact.icon}" class="image">
+                    <img th:src="@{'contact-image-' + ${contact.id} + '.htm'}"/>
+                </div>
+
+                <div class="mainInfo">
+                    <ul>
+                        <li th:text="${contact.name}" class="important">John Smith</li>
+                        <li th:text="${contact.organization}"
+                            class="important">Department of Commerce</li>
+                        <li th:text="${contact.phone}">310 927 4613</li>
+                        <li><a th:href="'mailto:' + ${contact.email}" 
+                               th:text="${contact.email}">john@gmail.com</a></li>
+                    </ul>
+                    <div th:if="${webUser.dialoutActive}"
+                         th:substituteby="/fragments/dial :: dial"/>
+
+                </div>
+
+                <div th:unless="${#strings.isEmpty(contact.addressLine1) and #strings.isEmpty(contact.addressCity) and #strings.isEmpty(contact.addressProvince)}"
+                     class="address">
+                    <ul >
+                        <li th:unless="${#strings.isEmpty(contact.addressLine1)}" 
+                            th:text="${contact.addressLine1}">123 Elm St</li>
+                        <li th:unless="${#strings.isEmpty(contact.addressLine2)}" 
+                            th:text="${contact.addressLine2}">Suite 202</li>
+                        <li th:unless="${#strings.isEmpty(contact.addressCity)}" 
+                            th:text="${contact.addressCity}">Springdale</li>
+                        <li th:unless="${#strings.isEmpty(contact.addressProvince)}" 
+                            th:text="${contact.addressProvince}">CA</li>
+                        <li th:unless="${#strings.isEmpty(contact.addressCountry)}" 
+                            th:text="${contact.addressCountry}">US</li>
+                    </ul>
+                </div>
+
+                <div class="notes" th:utext="${bbCode.process(contact.notes)}">
+                    He works for their <b>web application</b> group
+                </div>
+
+                <div class="edit">
+                    <a th:href="@{'contact-edit-' + ${contact.id} + '.htm'}"><img 
+                            src="../style/Edit-icon.png"/></a>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

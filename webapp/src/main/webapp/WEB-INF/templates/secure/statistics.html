@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title>Statistics</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <h1>Statistics</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Contacts</th>
+                        <th>Unique contacts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="monthEntry : ${byMonth}">
+                        <td th:text="${monthEntry.key}">month</td>
+                        <td th:text="${monthEntry.value}">count</td>
+                        <td th:text="${#sets.size(uniqueByMonth.get(monthEntry.key))}">unique</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

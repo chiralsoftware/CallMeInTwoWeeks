@@ -1,0 +1,395 @@
+root { 
+    display: block;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0mm;
+    padding: 0mm;
+    background-color:ghostwhite;
+}
+
+/* Do a toggle, without JavaScript! */
+/* See: http://noscript.net/noscript/toggle.html */
+label.toggle { cursor: pointer; color: #068 }
+input.toggle { display: none; }
+input.toggle:checked+div { display: none; }
+input.toggle:checked+table { display: none; }
+
+p#message {
+    border-radius: 2mm;
+    border-style: solid;
+    border-width: thin;
+    padding: 3mm;
+    margin-top: 1.3cm;
+    background: aquamarine;
+}
+
+div#navcontainer {
+    background:linear-gradient(135deg, rgba(197,222,234,1) 0%,rgba(138,187,215,1) 31%,rgba(6,109,171,1) 100%);
+    width: 100%;
+    margin-top: 0mm;
+    top: 0mm; /* This positions it absolutely */
+    margin-left: 0mm;
+    margin-right: 0mm;
+    margin-bottom: 3mm;
+    padding: 3mm;
+    /* we need border-box so that the border doesnt add width and make this overflow */
+    box-sizing: border-box;
+    position: fixed;
+    border-top-style: none;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: black;
+    border-bottom-left-radius: 1mm;
+    border-bottom-right-radius: 1mm;
+}
+
+#navcontainer span {
+    float:left;margin-right: 1cm;font-style: italic; font-size: x-large;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+#navcontainer ul
+{
+    vertical-align: middle;
+    margin: 0mm;
+    padding: 0mm;
+    list-style-type: none;
+    text-align: left;
+    /** I dont know why this 1mm margin on top is needed to vertical align this */
+    margin-top:  1mm;
+}
+
+#navcontainer ul li { display: inline;
+}
+
+#navcontainer ul li a
+{
+    text-decoration: none;
+    padding: .2em 1em;
+    color: #fff;
+    background-color: #036;
+}
+
+#navcontainer ul li a:hover
+{
+    color: #fff;
+    background-color: #369;
+}
+
+div.login-error {
+    background-color: lightpink;
+    padding: 1mm;
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+    border-radius: 3mm;
+    color: dimgray;
+}
+
+footer {
+    font-style: italic;
+    color: dimgray;
+    text-align: center;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: black;
+    margin-left: 0mm;
+    margin-right: 0mm;
+    padding-left: 0mm;
+    padding-right: 0mm;
+    width: 100%;
+    padding: 1mm;
+    font-size: smaller;
+    box-sizing: border-box;
+    position: fixed;
+    bottom:0mm;
+    background:linear-gradient(135deg, rgba(197,222,234,1) 0%,rgba(138,187,215,1) 31%,rgba(6,109,171,1) 100%);
+}
+
+table {
+    border-collapse: collapse;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 5mm;
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+    margin-left: 0mm;
+    margin-right: 0mm;
+    padding: 5mm;
+}
+
+th {
+    font-weight: bold;
+}
+
+td {
+    border-style: solid;
+    border-width: thin;
+    
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ccc;
+}
+
+table.contactList {
+    margin-top: 0.5mm;
+        box-sizing: border-box;
+        width: 100%;
+    border-bottom-left-radius: 2mm;
+    border-bottom-right-radius: 2mm;
+}
+
+table.contactList caption {
+    padding: 3mm;
+    text-align: left;
+    font-style: italic;
+    font-size: larger;
+    border-style: solid;
+    border-width: thin;
+    border-top-left-radius: 2mm;
+    border-top-right-radius: 2mm;
+/*    linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 100%);*/
+    background-image: linear-gradient(135deg, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0) 100%);
+}
+
+table.contactList td {
+    padding: 2mm;
+}
+
+table.contactList img {
+    width: 2cm;
+    height: 2cm;
+}
+
+h1 {
+    margin-bottom: 1mm;
+    padding: 2mm;
+    background:linear-gradient(135deg, rgba(197,222,234,1) 0%,rgba(138,187,215,1) 31%,rgba(6,109,171,1) 100%);
+/*    background-color: gainsboro;*/
+    border-radius: 1mm;
+    box-sizing: border-box;
+}
+
+p#copyright {
+    text-align: center;
+    color: dimgrey;
+    font-style: italic;
+    font-size: smaller;
+}
+
+div#content {
+    margin-left: 5mm;
+    margin-right: 5mm;
+    margin-top: 1.5cm;
+    margin-bottom:  1cm;
+    overflow: auto;
+/*    background-color: ghostwhite;*/
+}
+
+/* Make all text inputs have a cool shadowing feature */
+input {
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 10px 2px rgba(204, 202, 202, 0.75);
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+textarea {
+    border-radius: 4px;
+    box-shadow: inset 0px 0px 10px 2px rgba(204, 202, 202, 0.75);
+    padding: 4px;
+}
+
+div.formFields {
+    border-radius: 4px;
+    border-width: medium;
+    border-color: dimgray;
+    border-style: solid;
+    padding: 10px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 100%);
+}
+
+div.contactSummary {
+    padding: 1mm; 
+    border: solid darkslategray; 
+    border-radius: 1mm; 
+    background: linear-gradient(90deg, lightgray, whitesmoke);
+    overflow: auto;
+    height: 6cm;
+}
+
+div.contactSummary div {
+    display: inline-block;
+    float: left;
+    /* we want the height to be 100% minus 2mm for the padding of contactSummary */
+    height: calc(100% - 2mm);
+    /* Border-box means that we size from the outside of the border */
+    box-sizing: border-box;
+}
+
+div.contactSummary div.image {
+    width: 6cm;
+    height: 6cm;
+}
+
+div.contactSummary div.image img {
+    width: 6cm;
+    height: 6cm;
+}
+
+div.contactSummary div.notes {
+    background: ghostwhite;
+    border-style: solid;
+    border-width: thin;
+    border-color: ghostwhite;
+    border-radius: 1mm;
+    padding: 2mm;
+    margin: 1mm;
+    /* I'm not really sure where the -1cm part comes from but it does line up nicely */
+    width: calc(100% - 6cm - 18% - 18% - 0.5cm - 1cm - 1cm);
+}
+
+div.contactSummary div.mainInfo {
+    background: white;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 1mm;
+    border-color: white;
+    padding: 2mm;
+    margin: 1mm;
+    width: 18%;
+}
+
+div.contactSummary div.mainInfo ul li {
+    padding: 0.5mm;
+    font-size: large;
+}
+
+div.contactSummary div.mainInfo ul li:first-of-type {
+    color: green;
+    font-size: x-large;
+}
+
+div.contactSummary ul {
+    list-style-type: none;
+    padding: 0.5mm;
+}
+
+div.contactSummary div.address {
+    background: white;
+    border-style: solid;
+    border-width: thin;
+    border-color: white;
+    border-radius: 1mm;
+    padding: 2mm;
+    margin: 1mm;
+    width: 18%;
+}
+
+div.contactSummary div.edit {
+    text-align: end;
+    float: right;
+    border-style: none;
+    padding: 0;
+    margin-right: 1mm;
+    margin-top: 1mm;
+}
+
+div.contactSummary div.edit a img {
+    border-style: none;
+    width: 0.5cm;
+    height: 0.5cm;
+}
+
+fieldset {
+    overflow: auto;
+    border-radius: 3px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 100%);
+}
+
+span.callInfo {
+    font-style: oblique;
+    margin-left: 20px;
+}
+
+/* fix linear gradients to use the correct standard now:
+ http://www.broken-links.com/2012/01/11/the-new-and-hopefully-final-linear-gradient-syntax/*/
+
+.datagrid table { border-collapse: collapse; text-align: left; width: 100%; } 
+.datagrid {
+    font: normal 12px/150% Arial, Helvetica, sans-serif; 
+    background: #fff; 
+    overflow: hidden; 
+    border: 1px solid #8C8C8C; 
+    border-radius: 3px; }
+
+.datagrid table td, .datagrid table th { 
+    padding: 3px 10px; 
+}
+.datagrid table thead th {
+    background:
+        -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8C8C8C), color-stop(1, #7D7D7D) );
+    background:
+        -moz-linear-gradient( center top, #8C8C8C 5%, #7D7D7D 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8C8C8C', endColorstr='#7D7D7D');
+    background-color:#8C8C8C; 
+    color:#FFFFFF; 
+    font-size: 15px; 
+    font-weight: bold; 
+    border-left: 1px solid #A3A3A3; } 
+.datagrid table thead th:first-child { 
+    border: none; 
+}
+.datagrid table tbody td { 
+    color: #7D7D7D; 
+    border-left: 1px solid #DBDBDB;
+    font-size: 12px;
+    font-weight: normal; 
+}
+.datagrid table tbody .alt td { 
+    background: aliceblue; color: #7D7D7D; 
+}
+.datagrid table tbody td:first-child { 
+    border-left: none; 
+}
+.datagrid table tbody tr:last-child td { 
+    border-bottom: none; 
+}
+.datagrid table tfoot td div { 
+    border-top: 1px solid #8C8C8C;
+    background: #EBEBEB;
+} 
+.datagrid table tfoot td { 
+    padding: 0; font-size: 12px 
+} 
+.datagrid table tfoot td div { 
+    padding: 2px; 
+}
+.datagrid table tfoot td ul { 
+    margin: 0; padding:0; list-style: none; text-align: right; 
+}
+.datagrid table tfoot  li { 
+    display: inline; 
+}
+.datagrid table tfoot li a { 
+    text-decoration: none; 
+    display: inline-block;  
+    padding: 2px 8px; 
+    margin: 1px;
+    color: #F5F5F5;
+    border: 1px solid #8C8C8C;
+    border-radius: 3px; 
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8C8C8C), color-stop(1, #7D7D7D) );
+    background:-moz-linear-gradient( center top, #8C8C8C 5%, #7D7D7D 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#8C8C8C', endColorstr='#7D7D7D');
+    background-color:#8C8C8C; }
+.datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover { 
+    text-decoration: none;
+    border-color: #7D7D7D; 
+    color: #F5F5F5; 
+    background: none; 
+    background-color:#8C8C8C;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title  th:inline="text">Edit contact record for [[${contact.name}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <h1>Contact</h1>
+            
+            <div th:substituteby="/fragments/contact :: contact"/>
+            
+            <h1>Contact record</h1>
+            
+            <form action="#" method="post">
+                <fieldset>
+                    <label for="nextDate">Next follow-up date</label>
+                    <input type="datetime-local" id="nextDate" name="nextDate"
+                           th:value="${dateUtility.showDateFormDatetimeLocal(contactRecord.nextContactTime)}"/>
+                    
+                    <textarea style="width: 90%; height: 10cm;" name="notes"
+                              th:text="${contactRecord.notes}">
+                        I had a really great call with him!
+                    </textarea><br/>
+                    
+                    <input type="submit" value="Update"/>
+
+                    <label for="delete">Delete?</label>
+                    <input type="checkbox" value="true" id="delete" name="delete"/>
+                </fieldset>
+            </form>
+
+        </div>
+    </body>
+</html>

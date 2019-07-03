@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>List users</title>
+        <style>
+            table {
+                border-collapse: collapse;
+                border-color: black;
+                border-width: thin;
+                border-style: solid;
+                margin: 3mm;
+                padding: 3mm;
+            }
+            
+            td {
+                border-color: black;
+                border-width: thin;
+                border-style: solid;
+                margin: 3mm;
+                padding: 3mm;
+            }
+        </style>
+    </head>
+    <body>
+
+        <p>
+            <a th:href="@{/j_spring_security_logout}">Log out</a>
+        </p>
+
+        <p style="color: green;" th:if="${message}" th:text="${message}">Message</p>
+
+        <h1>List of system users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>OTP key</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="webUser : ${webUsers}">
+                    <td>
+                        <a th:href="@{'user-edit-' + ${webUser.id} + '.htm'}">Joe Smith</a>
+                    </td>
+                    <td th:text="${webUser.email}">joesmith@gmail.com</td>
+                    <td th:text="${webUser.password}">seekrit</td>
+                    <td th:text="${webUser.hexKey}">1111111111111111111</td>
+                    <td th:text="${webUser.active}">true</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </body>
+</html>

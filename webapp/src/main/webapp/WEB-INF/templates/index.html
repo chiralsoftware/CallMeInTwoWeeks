@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Call me in two weeks</title>
+
+        <link rel="stylesheet" href="style/style.css"/>
+    </head>
+    <body>
+        
+        <div id="navcontainer">
+            <span>Call me in two weeks</span>
+        </div>
+
+        <div id="content" th:if="${systemActive}">
+
+            <p style="font-size: larger; font-style: italic;">A 
+                sales tracking system focused on making calls to generate new business</p>
+
+            <h2>Users:</h2>
+
+            <p><a href="signup.htm">Sign up</a></p>
+
+            <p><a href="login.htm">Log in</a></p>
+
+            <h2>Administration:</h2>
+
+            <p><a href="login-admin.htm">Administration</a></p>
+        </div>
+        <div id="content" th:unless="${systemActive}">
+            <h1>System is not configured</h1>
+            <ul>
+                <li>Check the data source</li>
+            </ul>
+        </div>
+        
+        <div th:substituteby="fragments/footer :: copy"></div>
+
+    </body>
+</html>

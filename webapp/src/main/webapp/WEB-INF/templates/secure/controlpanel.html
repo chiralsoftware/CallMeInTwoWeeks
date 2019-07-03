@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title>Control Panel</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <h1>User control panel</h1>
+
+            <form action="#" th:object="${webUser}" method="post">
+                <fieldset>
+                    <label for="asteriskExtension">Asterisk extension (channel)</label><br/>
+                    <input type="text" placeholder="SIP/ext101" th:field="*{asteriskExtension}"/><br/>
+
+                    <label for="asteriskContext">Asterisk context</label><br/>
+                    <input type="text" placeholder="outbound" th:field="*{asteriskContext}"/><br/>
+
+                    <label for="asteriskContext">Asterisk dial prefix</label><br/>
+                    <input type="text" placeholder="9" th:field="*{asteriskDialPrefix}"/><br/>
+
+                    <input type="submit" value="Update"/>
+                </fieldset>
+            </form>
+
+        </div>
+    </body>
+</html>

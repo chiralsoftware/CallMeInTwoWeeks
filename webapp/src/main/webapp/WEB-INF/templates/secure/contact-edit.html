@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title th:inline="text">Edit contact - [[${contact.name}]]</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <h1 th:inline="text">Edit contact - [[${contact.name}]]</h1>
+            <div style="clear: both;"> </div>
+
+            <form  action="#" th:object="${contact}" method="post">
+                <div class="formFields">
+                    <div style="float:left; width:47%; padding:5px;">
+
+                        <div th:replace="/fragments/contact-image-upload :: contact-image-upload" ></div>
+
+                        <label for="notes">Notes</label><br/>
+                        <textarea id="notes" style="width:90%;" rows="10" name="notes"
+                                  th:text="*{notes}"/>
+                        <p>Hint: use BBCode in the notes</p>
+
+                    </div>
+
+                    <div style="float:right; width:47%; padding:5px;">
+
+                        <label for="name">Name</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{name}"/><br/>
+
+                        <label for="organization">Organization</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{organization}"/><br/>
+
+                        <label for="phone">Phone number</label><br/>
+                        <input style="width:95%;" type="tel" th:field="*{phone}"/><br/>
+
+                        <label for="email">Email</label><br/>
+                        <input style="width:95%;" type="email" th:field="*{email}"/><br/>
+
+                        <!-- Address fields -->
+                        <label for="addressLine1">Street address line 1</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{addressLine1}"/><br/>
+
+                        <label for="addressLine2">Street address line 2</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{addressLine2}"/><br/>
+
+                        <label for="addressCity">City</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{addressCity}"/><br/>
+
+                        <label for="addressProvince">State or province</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{addressProvince}"/><br/>
+
+                        <label for="addressPostalCode">Zip code or postal code</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{addressPostalCode}"/><br/>
+
+                        <label for="addressCountry">Country</label><br/>
+                        <input style="width:95%;" type="text" size="2" 
+                               th:field="*{addressCountry}"/><br/>
+
+                    </div>
+
+                    <div style="clear: both;"> </div>
+                    <input type="submit" value="Update"/>
+                    <a href="contacts-list.htm" style="appearance: button;" >Cancel</a>
+                </div>
+            </form>
+
+            <script>
+                function show_alert() {
+                    if (confirm("Do you really want to do this?"))
+                        document.forms[1].submit();
+                    else
+                        return false;
+                }
+            </script>
+            <form action="#" onsubmit="return confirm('Are you sure?');" th:object="${contact}" method="post">
+                <fieldset>
+                    <h1 th:inline="text">Delete contact - [[${contact.name}]]</h1>
+                    <input type="hidden" name="action" value="delete"/>
+                    <input type="submit" value="Delete"/>
+                </fieldset>
+            </form>
+        </div>
+
+    </body>
+</html>

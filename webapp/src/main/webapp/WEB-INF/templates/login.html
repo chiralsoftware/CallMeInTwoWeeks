@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Access </title>
+        <link rel="stylesheet" type="text/css" href="style/style.css"/>
+    </head>
+    <body>
+        <div id="navcontainer">
+            <span>Call me in two weeks</span>
+        </div>
+
+        <div id="content">
+            
+            <h1>Log in to the system</h1>
+
+            <div class="login-error" th:if="${loginError}">
+                <p th:text="${loginErrorMessage}">Hmm!</p>
+            </div>
+
+            <div class="login-error" th:if="${logoutSuccessful}">
+                <p>Log in again to continue</p>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                
+                <label for="username">Username</label>:<br/>
+                <input type="text" id="username" name="username" /> <br />
+
+                <label  for="password">Password:</label>
+                <br/>
+
+                <input type="password" id="password" name="password" /> <br />
+
+                <input type="submit" value="Log in" />
+            </form>   
+
+        </div>
+        <div th:substituteby="fragments/footer :: copy"></div>
+
+    </body>
+</html>

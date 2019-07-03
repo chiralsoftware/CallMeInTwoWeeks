@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Logged out</title>
+        <link rel="stylesheet"
+              type="text/css" href="style/style.css"/>
+    </head>
+    <body>
+        <div id="navcontainer">
+            <span>Call me in two weeks</span>
+        </div>
+
+        <div id="content">
+            <div class="login-error" th:if="${logoutSuccessful}">
+                <p>You have logged out successfully</p>
+            </div>
+            
+            <div th:unless="${logoutSuccessful}">
+                <p>An error has occurred</p>
+            </div>
+
+            <p><a href="secure/index.htm">Log in</a></p>
+
+            <p><a href="index.html">Main</a></p>
+        </div>
+
+        <div th:substituteby="fragments/footer :: copy"></div>
+
+    </body>
+</html>

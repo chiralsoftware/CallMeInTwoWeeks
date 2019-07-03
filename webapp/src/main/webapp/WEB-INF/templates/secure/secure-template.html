@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Secure page template</title>
+        <link rel="stylesheet" th:href="@{/style/style.css}"/>
+        <link rel="stylesheet" th:href="@{/style/upload-form.css}"/>
+    </head>
+    
+    <body>
+        <div th:include="/secure/navigation :: navigation"  id="navcontainer"></div>
+        
+        <p id="message" th:if="${message}" th:text="${message}">no message</p>
+        
+        <div id="content" layout:fragment="content">
+            <p>Page content goes here</p>
+        </div>
+
+        <footer
+           th:text="'Copyright 2002 - ' + ${#dates.year(#dates.createNow())} + ', Chiral Software, Inc.'"
+           >Copyright, 2002 - 2013, Chiral Software, Inc.</footer>
+
+    </body>
+</html>

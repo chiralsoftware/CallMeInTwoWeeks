@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Administration access</title>
+    </head>
+    
+    <body>
+        <h1>Administration access</h1>
+        <form th:action="@{/j_spring_security_check}" method="post">
+            <label for="j_username">Username</label>:<br/>
+            <input type="text" id="j_username" name="j_username" value="admin"/> <br />
+
+            <label for="j_password">Password:</label>
+            <br/>
+
+            <input type="password" id="j_password" name="j_password" /> <br />
+
+            <input type="submit" value="Log in" />
+        </form>   
+    </body>
+</html>

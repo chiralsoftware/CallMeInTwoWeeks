@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Contact list template</title>
+    </head>
+    <body>
+
+        <table th:fragment="contact-list" class="contactList"
+               th:unless="${#lists.isEmpty(contacts)}">
+            <caption th:text="${contactTableName}">Table name</caption>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Organization</th>
+                    <th>City</th>
+                    <th>Last contact</th>
+                    <th>Next contact time</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="contact : ${contacts}">
+                    <td th:if="${contact['icon']}">
+                        <img th:src="@{'contact-image-' + ${contact['id']} + '.htm'}"/>
+                    </td>
+
+                    <td th:unless="${contact['icon']}">
+                    </td>
+
+                    <td><a th:text="${contact['name']}"
+                           th:href="@{'contact-details-' + ${contact['id']} + '.htm'}">Joe 
+                            Smith</a></td>
+
+                    <td th:text="${contact['organization']}">Department of Commerce</td>
+
+                    <td th:text="${contact['addressCity']?: ' '}">Washington DC</td>
+
+                    <td th:text="${dateUtility.showQuickTime(contact['lastContactTime'])}">11:14 AM, Tue, 8 Oct</td>
+
+                    <td th:style="${dateUtility.showDateColor(contact['nextContactTime'])}"
+                        th:text="${dateUtility.showQuickTime(contact['nextContactTime'])}">11:14 AM, Tue, 8 Oct</td>
+
+                    <td th:text="${contact['notes']}">Notes</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </body>
+</html>

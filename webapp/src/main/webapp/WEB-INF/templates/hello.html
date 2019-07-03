@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Well whadya know!</title>
+    </head>
+    <body>
+        <div>Uh huh!</div>
+        <h1>And the value is: </h1>
+        <p th:text="${foo}">the time goes here </p>
+        <div th:substituteby="fragments/footer :: copy"></div>
+    </body>
+</html>

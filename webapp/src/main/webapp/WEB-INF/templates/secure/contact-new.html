@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title>New contact</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <form action="contact-new.htm" th:object="${contact}" method="post">
+                <fieldset>
+                    <h1 style="clear:both;">Add a contact</h1>
+
+                    <div style="float:left;width: 45%;">
+                        <div th:replace="/fragments/category-combo-box :: category-combo-box"/> 
+                        
+                        <label for="name">Name</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{name}"/><br/>
+
+                        <label for="organization">Organization</label><br/>
+                        <input style="width:95%;" type="text" th:field="*{organization}"/><br/>
+
+                        <label for="phone">Phone number</label><br/>
+                        <input style="width:95%;" type="tel" th:field="*{phone}"/><br/>
+
+                        <label for="email">Email</label><br/>
+                        <input style="width:95%;" type="email" th:field="*{email}"/><br/>
+                    </div>
+
+                    <div style="float:right;width: 45%;">
+                        <label for="notes">Notes</label><br/>
+                        <textarea id="notes" style="width:95%;" rows="10" name="notes"></textarea><br/>
+                        <p>Use BBCode in the notes</p>
+                    </div>
+
+                    <div style="clear:both;"> </div>
+                    <input type="submit" value="Create"/>
+
+                </fieldset>
+                <ul th:if="${#fields.hasErrors('*')}">
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input 
+                        is incorrect</li>
+                </ul>
+            </form>
+
+        </div>
+
+
+    </body>
+</html>

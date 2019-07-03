@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title>Contact details</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+
+            <div th:replace="/fragments/contact :: contact"/>
+
+            <p th:if="${#lists.isEmpty(contactRecords)}">Use the form below to add contact records</p>
+
+            <h1 id="addContact">Record information about a contact</h1>
+            <form action="#" method="post">
+                <fieldset>
+
+                    <label for="dialedCheckbox">Called?</label>
+                    <input type="checkbox" disabled="disabled"
+                           value="1" id="dialedCheckbox"/>
+                    <input type="hidden" id="dialedHiddenInput"
+                           value="0" name="dialed"/>
+
+                    <label for="voicemailCheckbox">Went to voicemail?</label>
+                    <input type="checkbox" disabled="disabled"
+                           name="voicemail"
+                           value="1" id="voicemailCheckbox"/>
+
+                    <label for="leftmessageCheckbox">Left a message?</label>
+                    <input type="checkbox" disabled="disabled"
+                           name="leftmessage"
+                           value="0" id="leftmessageCheckbox"/><br/>
+
+                    <label for="nextDate">Next follow-up date</label>
+                    <input type="datetime-local" id="nextDate" name="nextDate"/>
+
+                    <br/>
+
+                    <textarea id="notes" cols="120" rows="4" name="notes"></textarea><br/>
+
+                    <input type="submit" value="Save"/>
+
+                </fieldset>
+            </form>
+
+            <div th:unless="${#lists.isEmpty(contactRecords)}">
+
+                <h1>Contact history</h1>
+
+                <div style="background: linear-gradient(90deg, gainsboro, whitesmoke); border: solid lightgray; border-width: 3px; padding: 3px; border-radius: 3px; margin: 5px;" 
+                     th:each="contactRecord : ${contactRecords}">
+                    <div style="border-radius: 10px; border: solid lightgray; padding: 5px; background: honeydew;">
+                        <span th:text="${dateUtility.showTime(contactRecord.contactTime)}">2013-09-26</span>
+
+                        <span class="callInfo" th:if="${contactRecord.dialed} and not 
+                              ${contactRecord.voicemail}">Called</span>
+
+                        <span class="callInfo" th:if="${contactRecord.dialed} and  
+                              ${contactRecord.voicemail} and not ${contactRecord.leftmessage}">Called, 
+                            went to voicemail, did not leave message</span>
+
+                        <span class="callInfo" th:if="${contactRecord.dialed} and  
+                              ${contactRecord.voicemail} and ${contactRecord.leftmessage}">Called, 
+                            went to voicemail, left voicemail</span>
+
+                        <span style="float: right;">
+                            <a th:href="@{'contactrecord-edit-' + ${contactRecord.id} + '.htm'}"><img 
+                                    style="border: 0; padding-left:10px;" 
+                                    width="15" height="15" src="../style/Edit-icon.png"/></a>
+                        </span>
+
+
+                        <span th:style="${dateUtility.showDateColor(contactRecord.nextContactTime)} + '; float:right;'"
+                              th:text="'Follow up: ' + ${dateUtility.showTime(contactRecord.nextContactTime)}"
+                              >2013-09-26</span>
+                        <div style="clear: both;"> </div>
+                    </div>
+
+                    <div th:style="'margin: 4px; '" 
+                         th:utext="${bbCode.process(contactRecord.notes)}">
+                        We talked about <i>mobile apps</i>.
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>

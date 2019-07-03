@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="secure/secure-template">
+    <head>
+        <title>Contacts</title>
+    </head>
+    <body>
+
+        <div layout:fragment="content">
+                <p th:if="${#lists.isEmpty(contacts)}">No contacts have been created yet.<br/>
+                    <a href="contact-new.htm">Add a contact</a>
+                </p>
+
+            <div th:replace="/fragments/contact-list :: contact-list"/>
+
+        </div>
+
+    </body>
+</html>

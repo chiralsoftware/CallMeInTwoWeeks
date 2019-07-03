@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Category selector combo box</title>
+    </head>
+    <body>
+        <p>This combo box allows the user to select an existing category,
+            or enter a new one!</p>
+
+        <div th:fragment="category-combo-box">
+            <label for="categoryInput">Category:</label>
+            <input id="categoryInput" name="category" th:value="${selectedCategory}" list="categories"/>
+            <datalist id="categories">
+                <option th:each="cat : ${categories}" th:value="${cat}" />
+            </datalist>
+            <button disabled="disabled" id="categoryChangeButton" onclick="navigateForCategory();">>></button>
+            <button id="noCategoryButton" onclick="noCategory();">X</button>
+            <script>
+                var categoryInput = document.getElementById('categoryInput');
+                var initialInputValue = categoryInput.value;
+                var categoryButton = document.getElementById('categoryChangeButton');
+                console.log('The intiail value is: ' + initialInputValue);
+                setInterval(function() {
+                    if(initialInputValue !== categoryInput.value)
+                        categoryButton.disabled = false;
+                    else 
+                        categoryButton.disabled = true;
+//                    console.log('the initial value was: ' + initialInputValue + ' and the current value is: ' + categoryInput.value);
+                }, 1000);
+                function navigateForCategory() {
+                    var url = window.location.href;
+                    var separator = (url.indexOf('?') > -1) ? "&amp;" : "?";
+                    var qs = "category=" + encodeURIComponent(categoryInput.value);
+                    window.location.href = url + separator + qs;
+                }
+                function noCategory() {
+                    var url = window.location.href;
+                    if(url.indexOf('category=') === -1) return;
+                    url = url.substring(0,url.indexOf('category=') - 1);
+                    console.log('trimmed url: ' + url);
+                    window.location.href  = url;
+                }
+            </script>
+        </div>
+
+    </body>
+</html>
