@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,8 +22,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,14 +43,14 @@ public class ContactController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @RequestMapping(value = "/secure/contact-new.htm", method = RequestMethod.GET)
+    @GetMapping(value = "/secure/contact-new.htm")
     public String addContactGet(@ModelAttribute Contact contact) {
         LOG.info("Adding a new contact");
         return "/secure/contact-new";
     }
     
     @Transactional
-    @RequestMapping(value = "/secure/contact-new.htm", method = RequestMethod.POST)
+    @PostMapping(value = "/secure/contact-new.htm")
     public String addContactPost(@ModelAttribute @Valid Contact contact, RedirectAttributes redirectAttributes,
             BindingResult result) {
         if (entityManager == null)
@@ -63,10 +64,11 @@ public class ContactController {
 
         entityManager.persist(contact);
         redirectAttributes.addFlashAttribute("message", "Contact: " + contact.getName() + " added");
-        return "redirect:/secure/contacts-list.htm";
+        // ./contact-details-[[${contact.id}]].htm
+        return "redirect:/secure/contact-details-" + contact.getId() + ".htm";
     }
 
-    @RequestMapping(value = "/secure/contact-details-{contactId}.htm", method = RequestMethod.GET)
+    @GetMapping(value = "/secure/contact-details-{contactId}.htm")
     @Transactional(readOnly = true)
     public String details(@PathVariable Long contactId, Model model) {
         final Contact contact =
@@ -82,11 +84,10 @@ public class ContactController {
         
         model.addAttribute("dialoutEnabled", 
                 ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser().isDialoutActive());
-
         return "/secure/contact-details";
     }
 
-    @RequestMapping(value = "/secure/contact-edit-{contactId}.htm", method = RequestMethod.GET)
+    @GetMapping(value = "/secure/contact-edit-{contactId}.htm")
     @Transactional(readOnly = true)
     public String edit(@PathVariable("contactId") Long contactId, Model model) {
         final Contact contact =
@@ -117,7 +118,7 @@ public class ContactController {
     }
 
     @Transactional
-    @RequestMapping(value = "/secure/contact-edit-{contactId}.htm", method = RequestMethod.POST,
+    @PostMapping(value = "/secure/contact-edit-{contactId}.htm",
             params = "!action")
     public String editPost(@PathVariable("contactId") Long contactId,
             @ModelAttribute Contact contact,
@@ -196,7 +197,7 @@ public class ContactController {
     /**
      * This is a test that shows any image type
      */
-    @RequestMapping(value = "/secure/contact-image-{id}.htm", method = RequestMethod.GET)
+    @GetMapping(value = "/secure/contact-image-{id}.htm")
     @Transactional(readOnly = true)
     public ResponseEntity<byte[]> showContactImage(@PathVariable Long id) {
         final HttpHeaders responseHeaders = new HttpHeaders();

@@ -26,6 +26,24 @@
                     </ul>
                     <div th:if="${webUser.dialoutActive}"
                          th:substituteby="/fragments/dial :: dial"/>
+                    <div><textarea style="display: none;" disabled="disabled" cols="90" id="bbcodeLink">[url=./contact-details-[[${contact.id}]].htm][[${contact.name}]][/url]</textarea>
+                        <script>
+                            function copyLink() {
+                                // pretty ugly way to put some text into the clipboard
+                                // there is a more modern API for doing this
+                                var copyText = document.getElementById("bbcodeLink");
+                                copyText.disabled = false;
+                                copyText.style.display = "block";
+                                copyText.focus();
+                                copyText.select();
+                                document.execCommand("copy");
+                                copyText.disabled = true;
+                                copyText.style.display = "none";
+                            }
+                        </script>
+                        <button onclick="copyLink()">copy link</button>
+                    </div>
+
 
                 </div>
 
