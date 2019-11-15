@@ -16,7 +16,7 @@ import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +57,7 @@ private ManagerConnectionFactory managerFactory = null;
     private EntityManager entityManager;
 
     /**
-     * @param channel for example, SIP/ext103
+     * @param channel for example, PJSIP/ext103
      * @param context for example, staff
      * @param extension for example, 93109274613
      */
@@ -98,7 +98,7 @@ private ManagerConnectionFactory managerFactory = null;
         LOG.info("I'm ready to dial!  Contact to dial is: " + contactId);
 
         final WebUser webUser
-                = ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser();
+                = ((MyAuthToken) getContext().getAuthentication()).getWebUser();
         if (webUser.getAsteriskContext() == null || webUser.getAsteriskContext().isEmpty()
                 || webUser.getAsteriskExtension() == null || webUser.getAsteriskExtension().isEmpty()) {
             final DialResult dialResult = new DialResult();
@@ -126,7 +126,7 @@ private ManagerConnectionFactory managerFactory = null;
         private DialResult() {
         }
 
-        private String dialTime = new java.util.Date().toString();
+        private final String dialTime = new java.util.Date().toString();
         private String dialedNumber;
         private String result;
 
