@@ -14,7 +14,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>5.2.6.RELEASE</version>
+                <version>5.2.7.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.15.Final</version>
+            <version>5.4.17.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search-orm</artifactId>
-            <version>5.11.4.Final</version>
+            <version>5.11.5.Final</version>
         </dependency>
         <dependency>
             <groupId>javax.transaction</groupId>
@@ -109,13 +109,13 @@
         <dependency>
             <groupId>org.asteriskjava</groupId>
             <artifactId>asterisk-java</artifactId>
-            <version>3.2.0</version>
+            <version>3.5.0</version>
         </dependency>
         
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.12</version>
+            <version>42.2.14</version>
             <!-- Putting this in the compile scope makes maven put it into WEB-INF/lib in the finished WAR -->
             <scope>compile</scope>
         </dependency>
@@ -135,17 +135,17 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>5.3.2.RELEASE</version>
+            <version>5.3.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>5.3.2.RELEASE</version>
+            <version>5.3.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>5.3.2.RELEASE</version>
+            <version>5.3.3.RELEASE</version>
         </dependency>
 
         <!-- For the BBCode processor -->
@@ -191,7 +191,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.49.Final</version>
+            <version>4.1.50.Final</version>
         </dependency>
         
         <!-- for handling file uploads -->
