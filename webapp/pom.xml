@@ -109,7 +109,7 @@
         <dependency>
             <groupId>org.asteriskjava</groupId>
             <artifactId>asterisk-java</artifactId>
-            <version>3.8.0</version>
+            <version>3.9.0</version>
         </dependency>
         
         <dependency>
