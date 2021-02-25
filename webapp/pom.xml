@@ -14,7 +14,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>5.3.3</version>
+                <version>5.3.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search-orm</artifactId>
-            <version>5.11.7.Final</version>
+            <version>5.11.8.Final</version>
         </dependency>
         <dependency>
             <groupId>javax.transaction</groupId>
@@ -191,7 +191,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.55.Final</version>
+            <version>4.1.58.Final</version>
         </dependency>
         
         <!-- for handling file uploads -->
