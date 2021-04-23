@@ -1,0 +1,27 @@
+/* Style commands for the upload form object */
+
+div.uploadRow {
+    background-color: seashell;
+    width: 250px;
+    text-align: center;
+    padding: 5px;
+}
+
+div.uploadRow img.old {
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+}
+
+table.uploadInfo {
+    width: 250px;
+}
+table.uploadInfo tbody tr td {
+    padding: 5px;
+    background-color: aliceblue;
+}
+table.uploadInfo tbody tr th {
+    padding: 5px;
+    text-align: end;
+    background-color: beige;
+}
