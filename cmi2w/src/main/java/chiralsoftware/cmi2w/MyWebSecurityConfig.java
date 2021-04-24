@@ -1,5 +1,6 @@
 package chiralsoftware.cmi2w;
 
+import chiralsoftware.cmi2w.security.MyAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,30 +28,11 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
+                    .successHandler(new MyAuthenticationSuccessHandler())
                     .and()
                 .logout()
                     .permitAll();
     }
     
     
-	@Bean
-	@Override
-	public UserDetailsService userDetailsService() {
-		UserDetails user =
-			 User.withDefaultPasswordEncoder()
-				.username("user")
-				.password("password")
-				.roles("USER")
-				.build();
-                
-                final UserDetails admin =
-			 User.withDefaultPasswordEncoder()
-				.username("admin")
-				.password("admin")
-				.roles("ADMIN")
-				.build();
-                        
-
-		return new InMemoryUserDetailsManager(user,admin);
-	}
 }    

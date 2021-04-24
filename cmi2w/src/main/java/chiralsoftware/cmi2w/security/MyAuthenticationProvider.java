@@ -1,5 +1,6 @@
-package chiralsoftware.cmi2w.controllers;
+package chiralsoftware.cmi2w.security;
 
+import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.WebUser;
 import static java.lang.System.out;

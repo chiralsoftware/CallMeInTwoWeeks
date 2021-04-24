@@ -1,4 +1,4 @@
-package chiralsoftware.cmi2w.controllers;
+package chiralsoftware.cmi2w.security;
 
 import java.io.IOException;
 import java.util.Set;
@@ -23,9 +23,18 @@ public final class MyAuthenticationSuccessHandler implements AuthenticationSucce
     public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse httpServletResponse, Authentication a) 
             throws IOException, ServletException {
         final Set<String> roles = AuthorityUtils.authorityListToSet(a.getAuthorities());
-        if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("admin"))) { httpServletResponse.sendRedirect("admin/list-users.htm"); return; }
-        if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("user"))) { httpServletResponse.sendRedirect("secure/index.htm"); return; }
-        LOG.info("Roles set was unexpected: " + roles);
+        LOG.info("Here are the roles: " + roles);
+        if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("admin"))) { 
+            LOG.info("Authentication success, user is an admin user.");
+            httpServletResponse.sendRedirect("admin/list-users.htm"); 
+            return; 
+        }
+        if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("user"))) { 
+            LOG.info("Authentication success. user is a normal user.");
+            httpServletResponse.sendRedirect("secure/index.htm"); 
+            return; 
+        }
+        LOG.warning("Roles set was unexpected: " + roles);
     }
     
 }
