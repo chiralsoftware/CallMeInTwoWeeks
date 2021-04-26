@@ -25,7 +25,7 @@
                                th:text="${contact.email}">john@gmail.com</a></li>
                     </ul>
                     <div th:if="${webUser.dialoutActive}"
-                         th:substituteby="/fragments/dial :: dial"/>
+                         th:substituteby="fragments/dial :: dial"/>
                     <div><textarea style="display: none;" disabled="disabled" cols="90" id="bbcodeLink">[url=./contact-details-[[${contact.id}]].htm][[${contact.name}]][/url]</textarea>
                         <script>
                             function copyLink() {

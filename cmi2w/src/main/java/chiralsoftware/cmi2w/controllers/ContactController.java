@@ -84,7 +84,7 @@ public class ContactController {
         
         model.addAttribute("dialoutEnabled", 
                 ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser().isDialoutActive());
-        return "/secure/contact-details";
+        return "secure/contact-details";
     }
 
     @GetMapping(value = "/secure/contact-edit-{contactId}.htm")

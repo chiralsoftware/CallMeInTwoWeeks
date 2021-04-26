@@ -9,7 +9,7 @@
 
         <div layout:fragment="content">
 
-            <div th:replace="/fragments/contact :: contact"/>
+            <div th:replace="fragments/contact :: contact"/>
 
             <p th:if="${#lists.isEmpty(contactRecords)}">Use the form below to add contact records</p>
 
