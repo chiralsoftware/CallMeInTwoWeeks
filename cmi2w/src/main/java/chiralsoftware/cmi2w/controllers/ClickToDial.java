@@ -101,9 +101,7 @@ private ManagerConnectionFactory managerFactory = null;
                 = ((MyAuthToken) getContext().getAuthentication()).getWebUser();
         if (webUser.getAsteriskContext() == null || webUser.getAsteriskContext().isEmpty()
                 || webUser.getAsteriskExtension() == null || webUser.getAsteriskExtension().isEmpty()) {
-            final DialResult dialResult = new DialResult();
-            dialResult.result = "User not configured for dial-out";
-            return dialResult;
+            return new DialResult("999999", "User not configured for dial-out");
         }
 
         LOG.info("The web user I want is: " + webUser);
@@ -115,32 +113,14 @@ private ManagerConnectionFactory managerFactory = null;
 //                webUser.getAsteriskContext(),
 //                dialExtension);
 //        asteriskDialout.call();
-        final DialResult dialResult = new DialResult();
-        dialResult.result = "Dialed: " + contact.getPhone() + " at: " + new java.util.Date();
-        dialResult.dialedNumber = contact.getPhone();
-        return dialResult;
+        return new DialResult(contact.getPhone(), 
+                "Dialed: " + contact.getPhone() + " at: " + new java.util.Date());
     }
 
-    public static final class DialResult {
-
-        private DialResult() {
-        }
-
-        private final String dialTime = new java.util.Date().toString();
-        private String dialedNumber;
-        private String result;
+    public static record DialResult(String dialedNumber, String result) {
 
         public String getDialTime() {
-            return dialTime;
+            return new java.util.Date().toString();
         }
-
-        public String getDialedNumber() {
-            return dialedNumber;
-        }
-
-        public String getResult() {
-            return result;
-        }
-
     }
 }

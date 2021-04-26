@@ -11,10 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -28,8 +28,7 @@ public class WebAdminController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @RequestMapping(value = "/admin/list-users.htm",
-            method = RequestMethod.GET)
+    @GetMapping(value = "/admin/list-users.htm")
     public String onSubmit(Model model) {
         LOG.info("Need to list all the users");
         if (entityManager == null)
@@ -38,36 +37,30 @@ public class WebAdminController {
         final Query query = entityManager.createQuery("from WebUser wu order by wu.name");
         final List<WebUser> webUsers = query.getResultList();
         model.addAttribute("webUsers", webUsers);
-        return "/admin/list-users";
+        return "admin/list-users";
     }
 
     /**
      * Show some user data
      */
-    @RequestMapping(value = "/admin/user-edit-{webuserId}.htm",
-            method = RequestMethod.GET)
-    public String showUser(@PathVariable Long webuserId,
-            Model model) {
-        LOG.info("Showing user: " + webuserId);
+    @GetMapping(value = "/admin/user-edit-{webuserId}.htm")
+    public String showUser(@PathVariable Long webuserId,Model model) {
 
         final WebUser webUser = entityManager.find(WebUser.class, webuserId);
         model.addAttribute("webUser", webUser);
-        return "/admin/user-edit";
+        return "admin/user-edit";
     }
 
-    @RequestMapping(value = "/admin/user-edit-{webuserId}.htm",
-            method = RequestMethod.POST)
+    @PostMapping(value = "/admin/user-edit-{webuserId}.htm")
     @Transactional
     public String updateUser(@ModelAttribute @Valid WebUser webUser, BindingResult bindingResult,
     RedirectAttributes redirectAttributes) {
-        LOG.info("Hello!");
-        LOG.info("The web user is: " + webUser);
         if(bindingResult.hasErrors()) {
             LOG.info("OH no! the binding result had some ERRORS!!!!");
             redirectAttributes.addAttribute("webuserId", webUser.getId());
             return "/admin/user-edit-{webuserId}.htm";
         }
-        LOG.info("I'm about to update the web user");
+        LOG.info("I'm about to update the web user: " + webUser);
         entityManager.merge(webUser);
         entityManager.flush();
         LOG.info("I'm done updating it!");

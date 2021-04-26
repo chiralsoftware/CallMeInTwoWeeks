@@ -9,9 +9,9 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,8 +26,7 @@ public class ContactRecordController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @RequestMapping(value="/secure/contactrecord-edit-{contactRecordId}.htm",
-            method = RequestMethod.GET)
+    @GetMapping(value="/secure/contactrecord-edit-{contactRecordId}.htm")
     @Transactional(readOnly = true)
     public String contactRecordGet(@PathVariable Long contactRecordId, Model model) {
         final ContactRecord contactRecord = entityManager.find(ContactRecord.class, contactRecordId);
@@ -38,11 +37,10 @@ public class ContactRecordController {
         
         model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("dateUtility", new DateUtility());
-        return "/secure/contactrecord-edit";
+        return "secure/contactrecord-edit";
     }
     
-    @RequestMapping(value="/secure/contactrecord-edit-{contactRecordId}.htm",
-            method= RequestMethod.POST)
+    @PostMapping(value="/secure/contactrecord-edit-{contactRecordId}.htm")
     @Transactional
     public String contactRecordPost(@PathVariable Long contactRecordId, 
     @RequestParam(required = false) String delete, 

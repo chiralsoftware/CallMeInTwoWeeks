@@ -46,7 +46,7 @@ public class ContactController {
     @GetMapping(value = "/secure/contact-new.htm")
     public String addContactGet(@ModelAttribute Contact contact) {
         LOG.info("Adding a new contact");
-        return "/secure/contact-new";
+        return "secure/contact-new";
     }
     
     @Transactional
@@ -57,7 +57,7 @@ public class ContactController {
             LOG.info("Oh no!  EntityManager was null!");
         if (result.hasErrors()) {
             LOG.info("there are errors in the submitted contact, so go back and do it again.");
-            return "/secure/contact-new";
+            return "secure/contact-new";
         }
         contact.setUserId(((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getUserId());
         LOG.info("Read to add new contact! " + contact);

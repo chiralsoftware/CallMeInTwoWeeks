@@ -65,7 +65,7 @@ public class StatisticsController {
                                 Collectors.mapping(ContactRecord::getContactId, Collectors.toSet())));
         model.addAttribute("uniqueByMonth", uniqueByMonth); // this is a really ugly way to do this
         
-        return "/secure/statistics";
+        return "secure/statistics";
     }
     
 }

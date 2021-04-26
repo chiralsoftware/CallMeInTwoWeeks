@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 /**
  * Simple class for formatting dates
  *
- * @author hh
  */
 public final class DateUtility {
 

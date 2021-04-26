@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Generate lists of contacts
  *
- * @author hh
  */
 @Controller
 public class ContactListController {
@@ -118,16 +117,20 @@ public class ContactListController {
 
     // For the dashboard we have a very similar operation
     // but we show things on different views
-    @GetMapping(value = {"/secure/index.htm", "secure/contacts-list.htm"})
-    @Transactional(readOnly = true)
+    @GetMapping(value = {"/secure/index.htm", "/secure/contacts-list.htm"})
+//    @Transactional(readOnly = true)
     public String dashboard(Model model, @RequestParam(required = false) String sort,
             @RequestParam(required=false) String category) {
 
         model.addAttribute("categories", listCategories());
         model.addAttribute("selectedCategory", category);
+        
+        LOG.info("getting the dashboard view");
 
         // Get a list of all relevant contacts
         final List<ContactAndRecord> everything = listAll(category);
+        LOG.info("got all the contacts: " + everything.size());
+        
         final int limit = sort == null ? 5 : 1000;
         
         if (sort == null || "recent".equalsIgnoreCase(sort)) {
@@ -203,15 +206,17 @@ public class ContactListController {
                 model.addAttribute("contacts", randomContacts);
             }
         }
+        
+        LOG.info("ok everything is sorted!");
 
         model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("dateUtility", new DateUtility());
 
         if (sort == null) {
             model.addAttribute("contactTableName", null);
-            return "/secure/index";
+            return "secure/index";
         } // dashboard view
 
-        return "/secure/contacts-list";
+        return "secure/contacts-list";
     }
 }

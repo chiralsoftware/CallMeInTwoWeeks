@@ -9,7 +9,7 @@
     </head>
     
     <body>
-        <div th:include="/secure/navigation :: navigation"  id="navcontainer"></div>
+        <div th:include="secure/navigation :: navigation"  id="navcontainer"></div>
         
         <p id="message" th:if="${message}" th:text="${message}">no message</p>
         

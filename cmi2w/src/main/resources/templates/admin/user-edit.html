@@ -14,7 +14,7 @@
         
         <h1>Update a user</h1>
         
-        <form th:object="${webUser}" action="#" method="post">
+        <form th:object="${webUser}" th:action="@{user-edit-{id}.htm(id=${webUser.id})}" method="post">
             
             <label for="name">Name</label>
             <input type="text" name="name" th:value="*{name}"/><br/>
@@ -28,24 +28,24 @@
             <label for="asteriskExtension">Asterisk extension</label>
             <input type="text" name="asteriskExtension" th:value="*{asteriskExtension}"/><br/>
             
-            <label for="asteriskContext">Asterisk context</label>
-            <input type="text" name="asteriskContext" th:value="*{asteriskContext}"/><br/>
+            <label>Asterisk context
+            <input type="text" name="asteriskContext" th:value="*{asteriskContext}"/></label><br/>
 
-            <label for="asteriskDialPrefix">Asterisk dial prefix</label>
-            <input type="text" name="asteriskDialPrefix" th:value="*{asteriskDialPrefix}"/><br/>
+            <label >Asterisk dial prefix
+            <input type="text" name="asteriskDialPrefix" th:value="*{asteriskDialPrefix}"/></label><br/>
 
             <label for="timeZone">Time zone</label>
             <input type="text" name="timeZone" th:value="*{timeZone}"/><br/>
 
-            <label for="active">Active?</label>
-            <input type="checkbox" th:field="*{active}"/><br/>
+            <label>Active?
+            <input type="checkbox" th:field="*{active}"/></label><br/>
 
             <label for="hexKey">hexKey</label>
             <input type="text" name="hexKey" th:value="*{hexKey}"/><br/>
             
             <input type="hidden" name="id" th:value="*{id}"/>
 
-            <input type="submit"/>
+            <input type="submit" value="update"/>
             
         </form>
     </body>

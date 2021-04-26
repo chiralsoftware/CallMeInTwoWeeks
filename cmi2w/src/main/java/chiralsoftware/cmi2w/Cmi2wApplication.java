@@ -9,5 +9,5 @@ public class Cmi2wApplication {
     public static void main(String[] args) {
         SpringApplication.run(Cmi2wApplication.class, args);
     }
-
+    
 }

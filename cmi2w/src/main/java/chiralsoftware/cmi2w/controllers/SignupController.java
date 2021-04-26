@@ -7,13 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * A Controller to manage user signups
@@ -43,13 +43,11 @@ public class SignupController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public String onPost(@ModelAttribute @Valid SignupData signupData,BindingResult result) {
+    public String onPost(@ModelAttribute @Valid SignupData signupData,BindingResult result, 
+            RedirectAttributes redirectAttributes) {
         if (entityManager == null)
             LOG.info("Oh no! there was no entitymanager!");
 
-        LOG.info("The webuser is: " + signupData);
-        LOG.info("The result is: " + result);
-        
         if(! signupData.passwordsMatch()) {
             result.reject("passwords.dontmatch", "The passwords do not match.");
         }
@@ -71,11 +69,14 @@ public class SignupController {
         webUser.setEmail(signupData.getEmail());
         webUser.setName(signupData.getUsername());
         webUser.setPassword(signupData.getPassword1());
-        if(activationRequired) { LOG.info("activation is required."); webUser.setActive(false); }
+        if(activationRequired) { 
+            LOG.info("activation is required."); 
+            webUser.setActive(false); 
+        }
         entityManager.persist(webUser);
 
-        // we should use "flash" variables to show the result to the user
-        return "redirect:login.htm"; // success
+        redirectAttributes.addFlashAttribute("message", "user created");
+        return "redirect:login"; // success
 
     }
 }

@@ -1,10 +1,7 @@
 package chiralsoftware.cmi2w.security;
 
 import chiralsoftware.cmi2w.daos.MyAuthToken;
-import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.WebUser;
-import static java.lang.System.out;
-import java.util.ArrayList;
 import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,8 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 /**
- *
- * @author hh
+ * Authenticate users using JPA
  */
 @Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
@@ -41,7 +37,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication a) throws AuthenticationException {
         LOG.info("..-------- i'm in authenticate");
         if (entityManager == null) {
-            LOG.info("The EM is NULL!");
+            LOG.severe("The EntityManager is NULL!");
             return null;
         }
 
@@ -77,15 +73,18 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("User not found");
         final WebUser webUser = users.get(0);
         if (!webUser.isActive()) {
-            LOG.info("Denied log; user: " + webUser.getName() + " is not active.");
+            LOG.info("Denied; user: " + webUser.getName() + " is not active.");
             throw new DisabledException("User is not active");
         }
-        if(!webUser.getPassword().equals(a.getCredentials().toString()))
+        if(!webUser.getPassword().equals(a.getCredentials().toString())) {
+            LOG.info("the user: " + webUser + " password didn't match: " + a.getCredentials().toString());
             throw new BadCredentialsException("Password was incorrect");
+        }
         LOG.info("Returning a new user object, the user is logged in!");
         final MyAuthToken auth =
                 new MyAuthToken(a.getName(), a.getCredentials().toString(),
                 singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        LOG.info("here's the auth: "+ auth);
 
         auth.setWebUser(webUser);
         auth.setUserId(webUser.getId());

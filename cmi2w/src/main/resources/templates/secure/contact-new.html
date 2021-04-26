@@ -8,12 +8,12 @@
     </head>
     <body>
         <div layout:fragment="content">
-            <form action="contact-new.htm" th:object="${contact}" method="post">
+            <form th:action="contact-new.htm" th:object="${contact}" method="post">
                 <fieldset>
                     <h1 style="clear:both;">Add a contact</h1>
 
                     <div style="float:left;width: 45%;">
-                        <div th:replace="/fragments/category-combo-box :: category-combo-box"/> 
+                        <div th:replace="fragments/category-combo-box :: category-combo-box"/> 
                         
                         <label for="name">Name</label><br/>
                         <input style="width:95%;" type="text" th:field="*{name}"/><br/>
