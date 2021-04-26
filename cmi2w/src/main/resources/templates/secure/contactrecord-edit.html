@@ -10,11 +10,11 @@
         <div layout:fragment="content">
             <h1>Contact</h1>
             
-            <div th:substituteby="/fragments/contact :: contact"/>
+            <div th:substituteby="fragments/contact :: contact"/>
             
             <h1>Contact record</h1>
             
-            <form action="#" method="post">
+            <form th:action="@{contactrecord-edit-{id}.htm(id=${contactRecord.id})}" method="post">
                 <fieldset>
                     <label for="nextDate">Next follow-up date</label>
                     <input type="datetime-local" id="nextDate" name="nextDate"

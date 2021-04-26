@@ -88,19 +88,17 @@ public class ContactController {
     }
 
     @GetMapping(value = "/secure/contact-edit-{contactId}.htm")
-    @Transactional(readOnly = true)
     public String edit(@PathVariable("contactId") Long contactId, Model model) {
         final Contact contact =
                 entityManager.find(Contact.class, contactId);
         model.addAttribute("contact", contact);
         model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("dateUtility", new DateUtility());
-        return "/secure/contact-edit";
+        return "secure/contact-edit";
     }
 
     @Transactional
-    @RequestMapping(value = "/secure/contact-edit-{contactId}.htm", method = RequestMethod.POST,
-            params = "action=delete")
+    @PostMapping(value = "/secure/contact-edit-{contactId}.htm", params = "action=delete")
     public String deletePost(@PathVariable("contactId") Long contactId,
             //    @RequestParam(required = false) String action,
             @ModelAttribute Contact contact,
@@ -158,7 +156,7 @@ public class ContactController {
     }
 
     @Transactional
-    @RequestMapping(value = "/secure/contact-details-{contactId}.htm", method = RequestMethod.POST)
+    @PostMapping(value = "/secure/contact-details-{contactId}.htm")
     public String detailsPost(@PathVariable Long contactId, @RequestParam("nextDate") String nextDateString,
             @RequestParam("notes") String notes,
             @RequestParam(value = "dialed", required = false) String dialed,
@@ -198,7 +196,6 @@ public class ContactController {
      * This is a test that shows any image type
      */
     @GetMapping(value = "/secure/contact-image-{id}.htm")
-    @Transactional(readOnly = true)
     public ResponseEntity<byte[]> showContactImage(@PathVariable Long id) {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-type", "image/png");
