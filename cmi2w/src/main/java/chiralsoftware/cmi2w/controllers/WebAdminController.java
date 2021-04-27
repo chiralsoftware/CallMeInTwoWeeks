@@ -36,7 +36,9 @@ public class WebAdminController {
 
         final Query query = entityManager.createQuery("from WebUser wu order by wu.name");
         final List<WebUser> webUsers = query.getResultList();
+        LOG.info("Here are the users: "+ webUsers);
         model.addAttribute("webUsers", webUsers);
+        LOG.info("about to return the list");
         return "admin/list-users";
     }
 
