@@ -193,8 +193,9 @@ public class ContactController {
     }
 
     /**
-     * This is a test that shows any image type
+     * Display an image for a contact
      */
+    @Transactional(readOnly = true) 
     @GetMapping(value = "/secure/contact-image-{id}.htm")
     public ResponseEntity<byte[]> showContactImage(@PathVariable Long id) {
         final HttpHeaders responseHeaders = new HttpHeaders();

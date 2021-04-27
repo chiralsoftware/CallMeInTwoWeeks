@@ -42,6 +42,7 @@ public class ContactListController {
                 }
             };
 
+    /** Make this into a Java 16 record! */
     private static final class ContactAndRecord {
 
         private ContactAndRecord(Contact contact, ContactRecord contactRecord) {
@@ -117,8 +118,11 @@ public class ContactListController {
 
     // For the dashboard we have a very similar operation
     // but we show things on different views
+    /** The read-only transaction is needed for Postgres. see:
+     * https://forums.ohdsi.org/t/specify-transactional-on-jpa-repository-for-operations-involving-lob-fields/370/7
+     */
     @GetMapping(value = {"/secure/index.htm", "/secure/contacts-list.htm"})
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) 
     public String dashboard(Model model, @RequestParam(required = false) String sort,
             @RequestParam(required=false) String category) {
 
