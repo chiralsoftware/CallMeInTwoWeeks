@@ -137,11 +137,9 @@ public class ContactController {
         oldContact.setAddressPostalCode(contact.getAddressPostalCode());
         oldContact.setAddressCountry(contact.getAddressCountry());
 
-        LOG.info("Value of deleteImage is: " + deleteImage);
         if ("1".equalsIgnoreCase(deleteImage))
             oldContact.setIcon(null);
 
-        LOG.info("HEY THERE! temp image id is: " + tempImageId);
         if (tempImageId != null && tempImageId > 0) {
             // let's also save this image
             final byte[] iconBytes = entityManager.find(TemporaryImage.class, tempImageId).getContent();
