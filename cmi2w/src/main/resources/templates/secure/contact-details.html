@@ -14,7 +14,7 @@
             <p th:if="${#lists.isEmpty(contactRecords)}">Use the form below to add contact records</p>
 
             <h1 id="addContact">Record information about a contact</h1>
-            <form th:action="@{/secure/contact-details-{contactId}.htm(contactId=${contactId})}" method="post">
+            <form th:action="@{contact-details-{contactId}.htm(contactId=${contactId})}" method="post">
                 <fieldset>
 
                     <label for="dialedCheckbox">Called?</label>

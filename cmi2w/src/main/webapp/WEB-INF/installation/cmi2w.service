@@ -2,14 +2,12 @@
 Description=cmi2w
 After=syslog.target
 
-# Logging configuration based on information from:
-# https://medium.com/@manjiki/running-spring-boot-applications-as-system-services-on-linux-5ea5f148c39a
-
 [Service]
 Environment=SPRING_CONFIG_LOCATION=/opt/cmi2w/application.properties
 #Environment=LOG_FOLDER=/var/log/cmi2w
 User=cmi2w
-ExecStart=/opt/jdk-16.0.1/bin/java -Dlogging.config=/opt/cmi2w/logback-spring.xml -jar  /opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
+# ExecStart=/opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
+ExecStart=/opt/jdk-16.0.1/bin/java -Dlogging.config=/opt/cmi2w/logback-spring.xml -Dlogging.path=/var/log/cmi2w -jar  /opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
 SuccessExitStatus=143
 
 [Install]
