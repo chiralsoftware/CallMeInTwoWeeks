@@ -186,8 +186,7 @@ public class ContactController {
         contactRecord.setLeftmessage("1".equalsIgnoreCase(leftmessage));
         entityManager.persist(contactRecord);
         LOG.info("New contactRecord: " + contactRecord + " has been persisted!");
-        // FIXME: instead of doing a redirect, make it just go ahead and render the page
-        return details(contactId, model);
+        return "redirect:/secure/contact-details-{contactId}.htm";
     }
 
     /**

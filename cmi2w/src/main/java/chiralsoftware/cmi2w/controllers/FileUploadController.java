@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -77,15 +77,7 @@ public class FileUploadController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Content-type", "image/png");
         return new ResponseEntity<>(entityManager.find(TemporaryImage.class, id).getContent(),
-                responseHeaders, HttpStatus.OK);
+                responseHeaders, OK);
     }
-    
-    @PostMapping(value="/upload-save.htm") 
-    @ResponseBody
-    @Transactional
-    public String saveImage(@RequestParam Long tempImageId) {
-        LOG.info("Yeehaw!  I should be saving this image: " + tempImageId);
-        return "ok";
-    }
-    
+        
 }
