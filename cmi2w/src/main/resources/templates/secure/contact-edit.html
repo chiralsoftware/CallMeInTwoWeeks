@@ -13,11 +13,11 @@
             <h1 th:inline="text">Edit contact - [[${contact.name}]]</h1>
             <div style="clear: both;"> </div>
 
-            <form  action="#" th:object="${contact}" method="post">
+            <form  th:action="@{contact-edit-{id}.htm(id=${contact.id})}" th:object="${contact}" method="post">
                 <div class="formFields">
                     <div style="float:left; width:47%; padding:5px;">
 
-                        <div th:replace="/fragments/contact-image-upload :: contact-image-upload" ></div>
+                        <div th:replace="fragments/contact-image-upload :: contact-image-upload" ></div>
 
                         <label for="notes">Notes</label><br/>
                         <textarea id="notes" style="width:90%;" rows="10" name="notes"
@@ -76,7 +76,8 @@
                         return false;
                 }
             </script>
-            <form action="#" onsubmit="return confirm('Are you sure?');" th:object="${contact}" method="post">
+            <form th:action="@{contact-edit-{id}.htm(id=${contact.id})}" 
+                  onsubmit="return confirm('Are you sure?');" th:object="${contact}" method="post">
                 <fieldset>
                     <h1 th:inline="text">Delete contact - [[${contact.name}]]</h1>
                     <input type="hidden" name="action" value="delete"/>

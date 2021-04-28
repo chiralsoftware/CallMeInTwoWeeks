@@ -79,7 +79,7 @@
                     </div>
 
                     <div th:style="'margin: 4px; '" 
-                         th:utext="${bbCode.process(contactRecord.notes)}">
+                         th:utext="${@bbCode.process(contactRecord.notes)}">
                         We talked about <i>mobile apps</i>.
                     </div>
 

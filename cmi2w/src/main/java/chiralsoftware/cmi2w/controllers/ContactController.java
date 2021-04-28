@@ -76,7 +76,6 @@ public class ContactController {
                 entityManager.createQuery("from ContactRecord cr where cr.contactId = " + contactId + " "
                 + "order by contactTime desc", ContactRecord.class).getResultList();
 
-        model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("contactRecords", contactRecords);
         model.addAttribute("dateUtility", new DateUtility());
         
@@ -85,12 +84,13 @@ public class ContactController {
         return "secure/contact-details";
     }
 
+    
+    @Transactional(readOnly = true)
     @GetMapping(value = "/secure/contact-edit-{contactId}.htm")
     public String edit(@PathVariable("contactId") Long contactId, Model model) {
         final Contact contact =
                 entityManager.find(Contact.class, contactId);
         model.addAttribute("contact", contact);
-        model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("dateUtility", new DateUtility());
         return "secure/contact-edit";
     }
@@ -153,9 +153,10 @@ public class ContactController {
         return "redirect:/secure/contact-details-{contactId}.htm";
     }
 
+    /** Add a contact record */
     @Transactional
     @PostMapping(value = "/secure/contact-details-{contactId}.htm")
-    public String detailsPost(@PathVariable Long contactId, @RequestParam("nextDate") String nextDateString,
+    public String contactRecordPost(@PathVariable Long contactId, @RequestParam("nextDate") String nextDateString,
             @RequestParam("notes") String notes,
             @RequestParam(value = "dialed", required = false) String dialed,
             @RequestParam(value = "voicemail", required = false) String voicemail,
@@ -187,7 +188,8 @@ public class ContactController {
         contactRecord.setLeftmessage("1".equalsIgnoreCase(leftmessage));
         entityManager.persist(contactRecord);
         LOG.info("New contactRecord: " + contactRecord + " has been persisted!");
-        return "redirect:/secure/contact-details-{contactId}.htm";
+        // FIXME: instead of doing a redirect, make it just go ahead and render the page
+        return details(contactId, model);
     }
 
     /**

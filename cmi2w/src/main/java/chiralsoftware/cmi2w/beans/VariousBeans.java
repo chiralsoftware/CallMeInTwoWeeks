@@ -1,5 +1,6 @@
-package chiralsoftware.cmi2w;
+package chiralsoftware.cmi2w.beans;
 
+import java.util.logging.Logger;
 import org.kefirsf.bb.BBProcessorFactory;
 import org.kefirsf.bb.TextProcessor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class VariousBeans {
 
+    private static final Logger LOG = Logger.getLogger(VariousBeans.class.getName());
+    
     private static final TextProcessor processor;
     static {
 //        final Configuration configuration = new Configuration();
@@ -19,7 +22,8 @@ public class VariousBeans {
     }
     
     @Bean(name = "bbCode")
-    public TextProcessor getTextProcessor() {
+    public TextProcessor textProcessor() {
+        LOG.info("Returning the bbCode processor bean!");
         return processor;
     }
 
