@@ -6,6 +6,10 @@
         <title>Secure page template</title>
         <link rel="stylesheet" th:href="@{../style/style.css}"/>
         <link rel="stylesheet" th:href="@{../style/upload-form.css}"/>
+        <script th:inline="javascript">
+            var CSRF_TOKEN = /*[[${_csrf.token}]]*/ "token";
+            var CSRF_TOKEN_PARAMETER_NAME = /*[[${_csrf.parameterName}]]*/ "parameter";
+        </script>
     </head>
     
     <body>

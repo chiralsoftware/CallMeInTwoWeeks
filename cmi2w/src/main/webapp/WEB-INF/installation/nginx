@@ -1,0 +1,8 @@
+# Sample nginx configuration for using cmi2w behind an Nginx proxy.
+# Use of an Nginx proxy is recommended.
+# This assumes that the cmi2w process is running on port 8080.
+# That can be changed.
+
+location ^~ /cmi2w/ {
+    proxy_pass http://internal-server.example.com:8080/;
+}

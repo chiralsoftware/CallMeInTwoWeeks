@@ -8,14 +8,14 @@
     <body>
         <section th:fragment="dial">
             <p style="display: none;" id="dialResult">Nothing yet</p>
-            
+
             <input th:if="${dialoutEnabled}" type="hidden" name="contactId" id="contactId" 
                    th:value="${contact.id}"/>
             <button th:if="${dialoutEnabled}" type="button" onclick="dial();" id="dialButton"
                     th:text="${contact.phone}"
                     th:value="${contact.phone}">310 927 4613</button>
             <button th:unless="${dialoutEnabled}" th:value="${contact.phone}" disabled="disabled">310 927 4613</button>
-            
+
             <script th:if="${dialoutEnabled}" >
                 function dial() {
                     document.getElementById('dialButton').disabled = true;
@@ -23,13 +23,16 @@
                     formData.append('action', 'dial');
                     formData.append('contactId',
                             document.getElementById('contactId').value);
+
+                    formData.append(CSRF_TOKEN_PARAMETER_NAME, CSRF_TOKEN);
+
                     var xhr = new XMLHttpRequest();
                     // xhr.responseType = 'json';
                     // responseType somehow doesn't work or isn't needed anymore
                     xhr.open("POST", 'dial-' +
                             document.getElementById('contactId').value + '.htm');
-                    xhr.onreadystatechange=function () {
-                        if(xhr.readyState == 4) {
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4) {
                             var data = xhr.responseText;
                             showDialResult(data);
                         }
@@ -41,14 +44,14 @@
                     var parsedData = JSON.parse(data);
                     document.getElementById('dialResult').innerHTML = parsedData.result;
                     document.getElementById('dialResult').style.display = "";
-                    document.getElementById('dialedCheckbox').checked ='checked';
-                    document.getElementById('voicemailCheckbox').disabled =false;
-                    document.getElementById('leftmessageCheckbox').disabled =false;
+                    document.getElementById('dialedCheckbox').checked = 'checked';
+                    document.getElementById('voicemailCheckbox').disabled = false;
+                    document.getElementById('leftmessageCheckbox').disabled = false;
                     document.getElementById('dialedHiddenInput').value = '1';
                     document.getElementById('addContact').scrollIntoView();
                 }
             </script>
-            
+
         </section>
     </body>
 </html>

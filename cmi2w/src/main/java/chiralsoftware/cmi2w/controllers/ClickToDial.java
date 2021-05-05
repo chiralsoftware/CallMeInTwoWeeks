@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import static org.apache.commons.lang3.StringUtils.isAnyBlank;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionFactory;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 /**
  * Support click-to-dial links
  *
@@ -32,26 +33,41 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ClickToDial {
 
     private static final Logger LOG = Logger.getLogger(ClickToDial.class.getName());
-    
-    @Value("#{systemProperties['cmi2winternal.asteriskHost']}")
+
+    @Value("${asteriskHost:#{null}}")
     private String asteriskHost;
-    @Value("#{systemProperties['cmi2winternal.asteriskContext']}")
+    
+    /** This context is referring not to the dialplan context, but to the context within
+     the manager.conf file */
+    @Value("${asteriskContext:#{null}}")
     private String asteriskContext;
-    @Value("#{systemProperties['cmi2winternal.asteriskPassword']}")
+    
+    /** This refers to the value of secret within manager.conf */
+    @Value("${asteriskPassword:#{null}}")
     private String asteriskPassword;
     
+    @Value("${asteriskPort:5038}")
+    private int asteriskPort;
+    
+    @Value("${asteriskCallerId:cmi2w}")
+    private String asteriskCallerId;
+
     @PostConstruct
     public void createManagerFactory() {
         LOG.info("In createManagerFactory, the asteriskHost=" + asteriskHost + ", "
                 + "asteriskContext=" + asteriskContext + ", "
-                        + "asteriskPassword=" + (asteriskPassword == null ? "(null)" : asteriskPassword.length() + " chars"));
+                + "asteriskPassword=" + (asteriskPassword == null ? "(null)" : asteriskPassword.length() + " chars"));
         LOG.info("Should be like: 192.168.14.222, dialer, seekrit");
-        managerFactory = new ManagerConnectionFactory(asteriskHost, 
+        if (isAnyBlank(asteriskHost, asteriskContext, asteriskPassword))
+            managerFactory = null;
+        else
+            managerFactory = new ManagerConnectionFactory(asteriskHost,asteriskPort,
                     asteriskContext, asteriskPassword);
+        
         LOG.info("Created this manager factory: " + managerFactory);
     }
 
-private ManagerConnectionFactory managerFactory = null;
+    private ManagerConnectionFactory managerFactory = null;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -69,24 +85,24 @@ private ManagerConnectionFactory managerFactory = null;
         originateAction.setChannel(channel);
         originateAction.setExten(extension);
         originateAction.setPriority(1);
-        originateAction.setCallerId("3103567869");
+        originateAction.setCallerId(asteriskCallerId);
         originateAction.setAsync(true);
-        LOG.info("Going to dial channel: " + channel + ", context: " + context + ", "
-                + "extension: " + extension);
+//        LOG.info("Going to dial channel: " + channel + ", context: " + context + ", "
+//                + "extension: " + extension);
         try {
-            LOG.info("About to log in");
+            LOG.fine("About to log in");
             managerConnection.login();
-            LOG.info("About to dial");
+            LOG.fine("About to dial");
             final ManagerResponse response
                     = managerConnection.sendAction(originateAction);
-            LOG.info("Ok it should have done something i hpoe!!!");
-            LOG.info("here is the message: " + response.getMessage());
+            LOG.fine("Ok it should have done something i hpoe!!!");
+            LOG.fine("Here is the response: " + response.getResponse());
+            LOG.fine("here is the message: " + response.getMessage());
         } catch (AuthenticationFailedException | IOException | TimeoutException | IllegalArgumentException e) {
             LOG.log(WARNING, "Oh no! ", e);
         }
         managerConnection.logoff();
     }
-    
 
     @PostMapping(value = "/secure/dial-{contactId}.htm")
     @ResponseBody
@@ -94,8 +110,8 @@ private ManagerConnectionFactory managerFactory = null;
     public DialResult dial(@PathVariable Long contactId) {
         if (entityManager == null)
             LOG.warning("The entityManager is null!");
-
-        LOG.info("I'm ready to dial!  Contact to dial is: " + contactId);
+        if(managerFactory == null) 
+            return new DialResult("999999", "dial out is not configured. See logs.");
 
         final WebUser webUser
                 = ((MyAuthToken) getContext().getAuthentication()).getWebUser();
@@ -108,12 +124,15 @@ private ManagerConnectionFactory managerFactory = null;
         final Contact contact = entityManager.find(Contact.class, contactId);
         String dialExtension = webUser.getAsteriskDialPrefix() + contact.getPhone();
         dialExtension = dialExtension.replaceAll("[^0-9]+", "");
+//        LOG.info("Channel: " + webUser.getAsteriskExtension());
+//        LOG.info("Context: " + webUser.getAsteriskContext());
+//        LOG.info("Extension: " + dialExtension);
         dialAmi(webUser.getAsteriskExtension(), webUser.getAsteriskContext(), dialExtension);
 //        final AsteriskDialout asteriskDialout = new AsteriskDialout(webUser.getAsteriskExtension(),
 //                webUser.getAsteriskContext(),
 //                dialExtension);
 //        asteriskDialout.call();
-        return new DialResult(contact.getPhone(), 
+        return new DialResult(contact.getPhone(),
                 "Dialed: " + contact.getPhone() + " at: " + new java.util.Date());
     }
 
