@@ -9,6 +9,7 @@
         <script th:inline="javascript">
             var CSRF_TOKEN = /*[[${_csrf.token}]]*/ "token";
             var CSRF_TOKEN_PARAMETER_NAME = /*[[${_csrf.parameterName}]]*/ "parameter";
+            var CSRF_HEADER = /*[[${_csrf.headerName}]]*/ "x-csrf-token";
         </script>
     </head>
     

@@ -12,16 +12,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+//                .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/", "/home", "/index.html", "/login", "/signup.htm", 
                             "/style/**"
                     ).permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/secure/**").hasRole("USER").
+                    antMatchers("/upload.htm").hasRole("USER").
+                    antMatchers("/temporary-image*").hasRole("USER").
                     anyRequest().anonymous()
                 .and()
                 .formLogin()

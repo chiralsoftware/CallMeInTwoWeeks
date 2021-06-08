@@ -20,11 +20,11 @@
                 <img th:if="${contact.icon}"  id="oldImage" 
                      class="old"
                      th:src="@{'contact-image-' + ${contact.id} + '.htm'}" />
-                
+
                 <img id="uploadPreview" class="old"
                      style="display: none;" 
                      src="../style/grey-silhouette.png" />
-                
+
                 <br/>
 
                 <!-- The file input has no name attribute so it is not
@@ -76,44 +76,45 @@
             </div>
 
             <script>
-                           /** Use this function to save the image, after it has been 
-                            * successfully uploaded */
-                           function saveImage() {
-                               var dataToSend = new FormData();
-                               dataToSend.append('action', 'saveImage');
-                               dataToSend.append('contactId',
-                                       document.getElementById('contactId'));
-                               dataToSend.append('tempImageId',
-                                       document.getElementById('tempImageId').value);
-                               var xhr = new XMLHttpRequest();
-                               // fixme - we should somehow use relative paths in this
-                               xhr.open("POST", "../upload-save.htm");
-                               xhr.send(dataToSend);
-                               document.getElementById('saveButton').value = "Saved";
-                               document.getElementById('saveButton').disabled = true;
+                /** Use this function to save the image, after it has been 
+                 * successfully uploaded */
+                function saveImage() {
+                    var dataToSend = new FormData();
+                    dataToSend.append('action', 'saveImage');
+                    dataToSend.append('contactId',
+                            document.getElementById('contactId'));
+                    dataToSend.append('tempImageId',
+                            document.getElementById('tempImageId').value);
+                    var xhr = new XMLHttpRequest();
+                    // fixme - we should somehow use relative paths in this
+                    dataToSend.append(CSRF_TOKEN_PARAMETER_NAME, CSRF_TOKEN);
+                    xhr.open("POST", "../upload-save.htm");
+                    xhr.send(dataToSend);
+                    document.getElementById('saveButton').value = "Saved";
+                    document.getElementById('saveButton').disabled = true;
 
-                           }
+                }
 
-                           function fileSelected() {
-                               var file = document.getElementById('fileToUpload').files[0];
-                               if (file) {
-                                   var fileSize = 0;
-                                   if (file.size > 1000000)
-                                       fileSize = (Math.round(file.size * 100 / (1000000)) / 100).toString() + 'MB';
-                                   else
-                                       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+                function fileSelected() {
+                    var file = document.getElementById('fileToUpload').files[0];
+                    if (file) {
+                        var fileSize = 0;
+                        if (file.size > 1000000)
+                            fileSize = (Math.round(file.size * 100 / (1000000)) / 100).toString() + 'MB';
+                        else
+                            fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
-                                   document.getElementById('fileName').innerHTML = file.name;
-                                   document.getElementById('fileSize').innerHTML = fileSize;
-                                   document.getElementById('fileType').innerHTML = file.type;
-                                   document.getElementById('uploadButton').disabled = false;
-                                   previewImage();
-                               }
-                           }
+                        document.getElementById('fileName').innerHTML = file.name;
+                        document.getElementById('fileSize').innerHTML = fileSize;
+                        document.getElementById('fileType').innerHTML = file.type;
+                        document.getElementById('uploadButton').disabled = false;
+                        previewImage();
+                    }
+                }
 
-                           function uploadFile() {
+                function uploadFile() {
 
-                               var xhr = new XMLHttpRequest();
+                    var xhr = new XMLHttpRequest();
 //                    var ob = document.getElementById('form1');
 
 //                    console.log('The form obj is: ' + ob);
@@ -122,92 +123,94 @@
 //                        return;
 //                    }
 
-                               /* event listners */
-                               xhr.upload.addEventListener("progress", uploadProgress, false);
-                               xhr.addEventListener("load", uploadComplete, false);
-                               xhr.addEventListener("error", uploadFailed, false);
-                               xhr.addEventListener("abort", uploadCanceled, false);
-                               /* Be sure to change the url below to the url of your upload server side script */
-                               // FIXME - we should use relative paths somehow
-                               xhr.open("POST", "../upload.htm");
-                               var formData = new FormData();
-                               formData.append('fileToUpload',
-                                       document.getElementById('fileToUpload').files[0]);
-//                    xhr.send(new FormData(ob));
-                               xhr.send(formData);
-                           }
+                    /* event listners */
+                    xhr.upload.addEventListener("progress", uploadProgress, false);
+                    xhr.addEventListener("load", uploadComplete, false);
+                    xhr.addEventListener("error", uploadFailed, false);
+                    xhr.addEventListener("abort", uploadCanceled, false);
+                    
+                    // there is an issue with Spring Security and multipart form upload, so one solution
+                    // is to put the token in the URI params
+//                    xhr.open("POST", "../upload.htm?" + CSRF_TOKEN_PARAMETER_NAME + "=" + CSRF_TOKEN);
+                    xhr.open("POST", "../upload.htm");
+                    var formData = new FormData();
+                    formData.append('fileToUpload',
+                            document.getElementById('fileToUpload').files[0]);
+                    formData.append(CSRF_TOKEN_PARAMETER_NAME, CSRF_TOKEN);
+//                    xhr.setRequestHeader(CSRF_HEADER, CSRF_TOKEN);
+                    xhr.send(formData);
+                }
 
 
-                           function uploadProgress(evt) {
-                               if (evt.lengthComputable) {
-                                   var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                                   document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
-                               }
-                               else {
-                                   document.getElementById('progressNumber').innerHTML = 'unable to compute';
-                               }
-                           }
+                function uploadProgress(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                        document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+                    } else {
+                        document.getElementById('progressNumber').innerHTML = 'unable to compute';
+                    }
+                }
 
-                           function uploadComplete(evt) {
-                               console.log('File upload is complete; response text is: ' +
-                                       evt.target.responseText);
-                               document.getElementById('cancelButton').disabled = false;
-                               document.getElementById('saveButton').disabled = false;
-                               document.getElementById('uploadButton').disabled = true;
-                               document.getElementById('uploadPreview').src = '../temporary-image-' +
-                                       evt.target.responseText + '.htm';
-                               document.getElementById('progressNumber').innerHTML = 'uploaded';
-                               document.getElementById('tempImageId').value =
-                                       evt.target.responseText;
+                function uploadComplete(evt) {
+                    console.log('File upload is complete; response text is: ' +
+                            evt.target.responseText);
+                    document.getElementById('cancelButton').disabled = false;
+                    document.getElementById('saveButton').disabled = false;
+                    document.getElementById('uploadButton').disabled = true;
+                    document.getElementById('uploadPreview').src = '../temporary-image-' +
+                            evt.target.responseText + '.htm';
+                    document.getElementById('progressNumber').innerHTML = 'uploaded';
+                    document.getElementById('tempImageId').value =
+                            evt.target.responseText;
 
-                               // now we need to re-set the preview image as well
-                               //                        alert(evt.target.responseText);
-                           }
+                    // now we need to re-set the preview image as well
+                    //                        alert(evt.target.responseText);
+                }
 
-                           function uploadFailed(evt) {
-                               document.getElementById('uploadButton').disabled = true;
-                               alert("There was an error attempting to upload the file.");
-                           }
+                function uploadFailed(evt) {
+                    document.getElementById('uploadButton').disabled = true;
+                    alert("There was an error attempting to upload the file.");
+                }
 
-                           function uploadCanceled(evt) {
-                               document.getElementById('uploadButton').disabled = true;
-                               document.getElementById('saveButton').disabled = true;
+                function uploadCanceled(evt) {
+                    document.getElementById('uploadButton').disabled = true;
+                    document.getElementById('saveButton').disabled = true;
 
-                               alert("The upload has been canceled by the user or the browser dropped the connection.");
-                           }
+                    alert("The upload has been canceled by the user or the browser dropped the connection.");
+                }
 
-                           function previewImage() {
-                               var fileReader = new FileReader();
-                               fileReader.readAsDataURL(document.getElementById('fileToUpload').files[0]);
-                               fileReader.onload = function(oFREvent) {
-                                   document.getElementById('uploadPreview').src = oFREvent.target.result;
-                                   document.getElementById('uploadPreview').style.display = '';
+                function previewImage() {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(document.getElementById('fileToUpload').files[0]);
+                    fileReader.onload = function (oFREvent) {
+                        document.getElementById('uploadPreview').src = oFREvent.target.result;
+                        document.getElementById('uploadPreview').style.display = '';
 //                                   console.log('i am about to hide the old image i hope');
-                                   document.getElementById('oldImage').style.display = 'none';
-                                   
-                               };
-                           }
+                        document.getElementById('oldImage').style.display = 'none';
 
-                           function resetImage() {
-                               document.getElementById('fileToUpload').value = "";
-                               document.getElementById('uploadPreview').style.display = 'none';
-                               document.getElementById('oldImage').style.display = '';
+                    };
+                }
 
-    }
+                function resetImage() {
+                    document.getElementById('fileToUpload').value = "";
+                    document.getElementById('uploadPreview').style.display = 'none';
+                    document.getElementById('oldImage').style.display = '';
 
-                           function cancelImage() {
-                               document.getElementById('fileName').innerHTML = '-';
-                               document.getElementById('fileSize').innerHTML = '-';
-                               document.getElementById('fileType').innerHTML = '-';
-                               document.getElementById('progressNumber').innerHTML = 'not started';
-                               document.getElementById('uploadButton').disabled = false;
-                               document.getElementById('cancelButton').disabled = true;
-                               document.getElementById('saveButton').disabled = true;
+                }
 
-                               document.getElementById('saveButton').value = "Save";
-                               document.getElementById('saveButton').disabled = false;
-                               resetImage();
-                           }
+                function cancelImage() {
+                    document.getElementById('fileName').innerHTML = '-';
+                    document.getElementById('fileSize').innerHTML = '-';
+                    document.getElementById('fileType').innerHTML = '-';
+                    document.getElementById('progressNumber').innerHTML = 'not started';
+                    document.getElementById('uploadButton').disabled = false;
+                    document.getElementById('cancelButton').disabled = true;
+                    document.getElementById('saveButton').disabled = true;
+
+                    document.getElementById('saveButton').value = "Save";
+                    document.getElementById('saveButton').disabled = false;
+                    resetImage();
+                }
             </script>
         </section>
 
