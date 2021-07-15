@@ -33,6 +33,12 @@ public class Contact implements Serializable {
     private String phone;
     
     @Column
+    private String extension;
+
+    @Column
+    private String mobile;
+    
+    @Column
     private String email;
     
     @Column(length=100000)
@@ -63,12 +69,14 @@ public class Contact implements Serializable {
     @Column
     private String category;
 
+    /** This isn't the standard way to do this anymore */
     public Map<String,Object> addValuesToMap(Map<String,Object> m) {
         if(m == null) m = new HashMap<>();
         m.put("id", id);
         m.put("name", name);
         m.put("organization", organization);
         m.put("phone", phone);
+        m.put("mobile", mobile);
         m.put("email", email);
         m.put("notes", notes);
         m.put("addressLine1", addressLine1);
@@ -120,6 +128,22 @@ public class Contact implements Serializable {
         this.phone = phone;
     }
 
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+    
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+    
     /**
      * @return the email
      */
