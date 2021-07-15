@@ -4,6 +4,7 @@ import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.Contact;
 import chiralsoftware.cmi2w.entities.ContactRecord;
 import chiralsoftware.cmi2w.entities.TemporaryImage;
+import static java.lang.System.currentTimeMillis;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.Valid;
+import static org.apache.commons.lang3.StringUtils.normalizeSpace;
+import static org.apache.commons.lang3.StringUtils.trim;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -124,18 +127,20 @@ public class ContactController {
         final Contact oldContact =
                 entityManager.find(Contact.class, contactId);
 
-        oldContact.setEmail(contact.getEmail());
-        oldContact.setName(contact.getName());
-        oldContact.setNotes(contact.getNotes());
-        oldContact.setOrganization(contact.getOrganization());
-        oldContact.setPhone(contact.getPhone());
+        oldContact.setEmail(trim(contact.getEmail()));
+        oldContact.setName(normalizeSpace(contact.getName()));
+        oldContact.setNotes(trim(contact.getNotes()));
+        oldContact.setOrganization(normalizeSpace(contact.getOrganization()));
+        oldContact.setPhone(normalizeSpace(contact.getPhone()));
+        oldContact.setExtension(normalizeSpace(contact.getExtension()));
+        oldContact.setMobile(normalizeSpace(contact.getMobile()));
 
-        oldContact.setAddressLine1(contact.getAddressLine1());
-        oldContact.setAddressLine2(contact.getAddressLine2());
-        oldContact.setAddressCity(contact.getAddressCity());
-        oldContact.setAddressProvince(contact.getAddressProvince());
-        oldContact.setAddressPostalCode(contact.getAddressPostalCode());
-        oldContact.setAddressCountry(contact.getAddressCountry());
+        oldContact.setAddressLine1(normalizeSpace(contact.getAddressLine1()));
+        oldContact.setAddressLine2(normalizeSpace(contact.getAddressLine2()));
+        oldContact.setAddressCity(normalizeSpace(contact.getAddressCity()));
+        oldContact.setAddressProvince(normalizeSpace(contact.getAddressProvince()));
+        oldContact.setAddressPostalCode(normalizeSpace(contact.getAddressPostalCode()));
+        oldContact.setAddressCountry(normalizeSpace(contact.getAddressCountry()));
 
         if ("1".equalsIgnoreCase(deleteImage))
             oldContact.setIcon(null);
@@ -168,7 +173,7 @@ public class ContactController {
         // '2013-10-11T23:58'
         // which is in the user's local TZ
         final ContactRecord contactRecord = new ContactRecord();
-        contactRecord.setContactTime(System.currentTimeMillis());
+        contactRecord.setContactTime(currentTimeMillis());
         try {
             final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             df.setTimeZone(((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getTimeZone());
@@ -180,7 +185,7 @@ public class ContactController {
             contactRecord.setNextContactTime(new Date().getTime());
         }
         contactRecord.setContactId(contactId);
-        contactRecord.setNotes(notes);
+        contactRecord.setNotes(trim(notes));
         contactRecord.setDialed("1".equalsIgnoreCase(dialed));
         contactRecord.setVoicemail("1".equalsIgnoreCase(voicemail));
         contactRecord.setLeftmessage("1".equalsIgnoreCase(leftmessage));

@@ -20,8 +20,8 @@
                         <li th:text="${contact.name}" class="important">John Smith</li>
                         <li th:text="${contact.organization}"
                             class="important">Department of Commerce</li>
-                        <li>[[${contact.phone}]][[${contact.extension == null ? '' : (' ext. ' + contact.extension)}]]</li>
-                        <li th:unless="${#strings.isEmpty(contact.mobile)}">[[${contact.mobile}]]</li>
+                        <li>[[${contact.phone}]][[${#strings.isEmpty(contact.extension) ? '' : (' ext. ' + contact.extension)}]]</li>
+                        <li th:unless="${#strings.isEmpty(contact.mobile)}">Mobile: [[${contact.mobile}]]</li>
                         <li><a th:href="'mailto:' + ${contact.email}" 
                                th:text="${contact.email}">john@gmail.com</a></li>
                     </ul>
