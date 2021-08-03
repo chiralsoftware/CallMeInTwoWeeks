@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -107,22 +108,32 @@ public class ClickToDial {
     @PostMapping(value = "/secure/dial-{contactId}.htm")
     @ResponseBody
     @Transactional(readOnly = true)
-    public DialResult dial(@PathVariable Long contactId) {
+    public DialResult dial(@PathVariable Long contactId, @RequestParam(required = false, defaultValue = "main") String target) {
         if (entityManager == null)
             LOG.warning("The entityManager is null!");
         if(managerFactory == null) 
-            return new DialResult("999999", "dial out is not configured. See logs.");
+            return new DialResult("999999", "dial out is not configured. See logs.", new java.util.Date().toString());
 
         final WebUser webUser
                 = ((MyAuthToken) getContext().getAuthentication()).getWebUser();
         if (webUser.getAsteriskContext() == null || webUser.getAsteriskContext().isEmpty()
                 || webUser.getAsteriskExtension() == null || webUser.getAsteriskExtension().isEmpty()) {
-            return new DialResult("999999", "User not configured for dial-out");
+            return new DialResult("999999", "User not configured for dial-out", new java.util.Date().toString());
         }
 
         LOG.info("The web user I want is: " + webUser);
         final Contact contact = entityManager.find(Contact.class, contactId);
-        String dialExtension = webUser.getAsteriskDialPrefix() + contact.getPhone();
+        final String phoneNumber = switch(target) {
+            case "main" -> contact.getPhone();
+            case "mobile" -> contact.getMobile();
+            default -> contact.getPhone();
+        };
+        if(isBlank(phoneNumber)) {
+            LOG.info("Couldn't find any phone number to dial.");
+            return new DialResult("999999", "there was no phone number to dial!", new java.util.Date().toString());
+        }
+        
+        String dialExtension = webUser.getAsteriskDialPrefix() + phoneNumber;
         dialExtension = dialExtension.replaceAll("[^0-9]+", "");
 //        LOG.info("Channel: " + webUser.getAsteriskExtension());
 //        LOG.info("Context: " + webUser.getAsteriskContext());
@@ -132,14 +143,12 @@ public class ClickToDial {
 //                webUser.getAsteriskContext(),
 //                dialExtension);
 //        asteriskDialout.call();
-        return new DialResult(contact.getPhone(),
-                "Dialed: " + contact.getPhone() + " at: " + new java.util.Date());
+        return new DialResult(phoneNumber,
+                "Dialed: " + phoneNumber + " at: " + new java.util.Date(), 
+        new java.util.Date().toString());
     }
 
-    public static record DialResult(String dialedNumber, String result) {
-
-        public String getDialTime() {
-            return new java.util.Date().toString();
-        }
+    public static record DialResult(String dialedNumber, String result, String dialTime) {
+        
     }
 }

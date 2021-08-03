@@ -11,18 +11,24 @@
 
             <input th:if="${dialoutEnabled}" type="hidden" name="contactId" id="contactId" 
                    th:value="${contact.id}"/>
-            <button th:if="${dialoutEnabled}" type="button" onclick="dial();" id="dialButton"
+            <button th:if="${dialoutEnabled}" type="button" onclick="dial(this, 'main');" id="dialButton"
                     th:text="${contact.phone}"
-                    th:value="${contact.phone}">310 927 4613</button>
+                    th:value="${contact.phone}">212 555 5555</button>
+
+            <button th:if="${dialoutEnabled && ! #strings.isEmpty(contact.mobile)}" type="button" onclick="dial(this,'mobile');" id="dialButton"
+                    th:text="${contact.mobile}">212 555 5555</button>
+
             <button th:unless="${dialoutEnabled}" th:value="${contact.phone}" disabled="disabled">310 927 4613</button>
 
             <script th:if="${dialoutEnabled}" >
-                function dial() {
-                    document.getElementById('dialButton').disabled = true;
+                function dial(source, target) {
+//                    console.log("I need to dial this target: " + target);
+                    source.disabled = true;
                     var formData = new FormData();
                     formData.append('action', 'dial');
                     formData.append('contactId',
                             document.getElementById('contactId').value);
+                    formData.append('target', target);
 
                     formData.append(CSRF_TOKEN_PARAMETER_NAME, CSRF_TOKEN);
 
@@ -32,7 +38,7 @@
                     xhr.open("POST", 'dial-' +
                             document.getElementById('contactId').value + '.htm');
                     xhr.onreadystatechange = function () {
-                        if (xhr.readyState == 4) {
+                        if (xhr.readyState === 4) {
                             var data = xhr.responseText;
                             showDialResult(data);
                         }
