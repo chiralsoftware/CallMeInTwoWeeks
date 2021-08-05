@@ -15,7 +15,8 @@
                     th:text="${contact.phone}"
                     th:value="${contact.phone}">212 555 5555</button>
 
-            <button th:if="${dialoutEnabled && ! #strings.isEmpty(contact.mobile)}" type="button" onclick="dial(this,'mobile');" id="dialButton"
+            <button th:if="${dialoutEnabled && contact.mobile != null && (! #strings.isEmpty(contact.mobile))}" 
+                    type="button" onclick="dial(this,'mobile');" id="dialButton"
                     th:text="${contact.mobile}">212 555 5555</button>
 
             <button th:unless="${dialoutEnabled}" th:value="${contact.phone}" disabled="disabled">310 927 4613</button>

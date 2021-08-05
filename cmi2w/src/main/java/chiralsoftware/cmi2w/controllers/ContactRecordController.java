@@ -1,11 +1,13 @@
 package chiralsoftware.cmi2w.controllers;
 
+import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.Contact;
 import chiralsoftware.cmi2w.entities.ContactRecord;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -35,8 +37,13 @@ public class ContactRecordController {
         final Contact contact = entityManager.find(Contact.class, contactRecord.getContactId());
         model.addAttribute("contact", contact);
         
-        model.addAttribute("bbCode", BbCode.getProcessor());
+//        model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("dateUtility", new DateUtility());
+
+        // this is really clunky
+        model.addAttribute("dialoutEnabled", 
+                ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser().isDialoutActive());
+        
         return "secure/contactrecord-edit";
     }
     
