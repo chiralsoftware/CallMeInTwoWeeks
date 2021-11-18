@@ -59,10 +59,6 @@ public class WebUser implements Serializable {
         /** In production, this should be false and there should be an admin to activate it */
         @Column
         private boolean active = true;
-        
-        @Column
-        private String hexKey = null;
-        
 
     /**
      * @return the id
@@ -185,20 +181,6 @@ public class WebUser implements Serializable {
         this.active = active;
     }
 
-    /**
-     * @return the hexKey
-     */
-    public String getHexKey() {
-        return hexKey;
-    }
-
-    /**
-     * @param hexKey the hexKey to set
-     */
-    public void setHexKey(String hexKey) {
-        this.hexKey = hexKey;
-    }
-
     @Override
     public int hashCode() {
         int hash = 3;
@@ -210,7 +192,6 @@ public class WebUser implements Serializable {
         hash = 67 * hash + Objects.hashCode(this.asteriskDialPrefix);
         hash = 67 * hash + Objects.hashCode(this.timeZone);
         hash = 67 * hash + (this.active ? 1 : 0);
-        hash = 67 * hash + Objects.hashCode(this.hexKey);
         return hash;
     }
 
@@ -237,14 +218,12 @@ public class WebUser implements Serializable {
             return false;
         if (this.active != other.active)
             return false;
-        if (!Objects.equals(this.hexKey, other.hexKey))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "WebUser{" + "id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", asteriskExtension=" + asteriskExtension + ", asteriskContext=" + asteriskContext + ", asteriskDialPrefix=" + asteriskDialPrefix + ", timeZone=" + timeZone + ", active=" + active + ", hexKey=" + hexKey + '}';
+        return "WebUser{" + "id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", asteriskExtension=" + asteriskExtension + ", asteriskContext=" + asteriskContext + ", asteriskDialPrefix=" + asteriskDialPrefix + ", timeZone=" + timeZone + ", active=" + active + '}';
     }
 
 }
