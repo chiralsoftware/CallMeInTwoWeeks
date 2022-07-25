@@ -7,7 +7,7 @@ Environment=SPRING_CONFIG_LOCATION=/opt/cmi2w/application.properties
 #Environment=LOG_FOLDER=/var/log/cmi2w
 User=cmi2w
 # ExecStart=/opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
-ExecStart=/opt/jdk-16.0.1/bin/java -Dlogging.config=/opt/cmi2w/logback-spring.xml -Dlogging.path=/var/log/cmi2w -jar  /opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
+ExecStart=/opt/jdk-17.0.4/bin/java -Dlogging.config=/opt/cmi2w/logback-spring.xml -Dlogging.path=/var/log/cmi2w -jar  /opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
 SuccessExitStatus=143
 
 [Install]
