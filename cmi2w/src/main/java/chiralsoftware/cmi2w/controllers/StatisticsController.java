@@ -1,6 +1,9 @@
 package chiralsoftware.cmi2w.controllers;
 
 import chiralsoftware.cmi2w.entities.ContactRecord;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import static java.time.Instant.ofEpochMilli;
 import java.time.LocalDateTime;
 import static java.time.LocalDateTime.ofInstant;
@@ -16,9 +19,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

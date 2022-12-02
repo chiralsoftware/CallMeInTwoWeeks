@@ -1,10 +1,9 @@
 package chiralsoftware.cmi2w.controllers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +27,6 @@ public class SearchController {
     @GetMapping("/secure/search")
     public void search(String q) {
         LOG.info("I should be doing a search for: " + q);
-        FullTextEntityManager f = Search.getFullTextEntityManager(entityManager);
     }
 
     @GetMapping("/secure/rebuild-index")
