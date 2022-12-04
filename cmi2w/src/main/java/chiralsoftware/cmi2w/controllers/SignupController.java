@@ -10,9 +10,10 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -21,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author hh
  */
 @Controller
-@RequestMapping("/signup.htm")
+@RequestMapping("/signup")
 public class SignupController {
 
     private static final Logger LOG = Logger.getLogger(SignupController.class.getName());
@@ -36,13 +37,13 @@ public class SignupController {
      * This method doesn't do anything other than ensure that the user object is
      * created
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String onGet(@ModelAttribute SignupData signupData) {
         return "signup";
     }
 
     @Transactional
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public String onPost(@ModelAttribute @Valid SignupData signupData,BindingResult result, 
             RedirectAttributes redirectAttributes) {
         if (entityManager == null)
