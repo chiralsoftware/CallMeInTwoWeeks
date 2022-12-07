@@ -24,7 +24,7 @@
     <body>
 
         <p>
-            <a th:href="@{/j_spring_security_logout}">Log out</a>
+            <a th:href="@{/logout}">Log out</a>
         </p>
 
         <p style="color: green;" th:if="${message}" th:text="${message}">Message</p>
@@ -36,7 +36,6 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Password</th>
-                    <th>OTP key</th>
                     <th>Active</th>
                 </tr>
             </thead>
@@ -44,7 +43,7 @@
             <tbody>
                 <tr th:each="webUser : ${webUsers}">
                     <td>
-                        <a th:href="@{'user-edit-' + ${webUser.id} + '.htm'}">Joe Smith</a>
+                        <a th:href="@{'user-edit-' + ${webUser.id} + '.htm'}">[[${webUser.name}]]</a>
                     </td>
                     <td th:text="${webUser.email}">joesmith@gmail.com</td>
                     <td th:text="${webUser.password}">seekrit</td>
