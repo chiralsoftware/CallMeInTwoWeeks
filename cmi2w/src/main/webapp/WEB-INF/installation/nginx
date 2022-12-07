@@ -1,8 +1,12 @@
 # Sample nginx configuration for using cmi2w behind an Nginx proxy.
 # Use of an Nginx proxy is recommended.
 # This assumes that the cmi2w process is running on port 8080.
-# That can be changed.
 
 location ^~ /cmi2w/ {
     proxy_pass http://internal-server.example.com:8080/;
+    # The default Spring login page uses a processing URL of /login
+    # This can be changed easily within Spring but if we want to just use
+    # the default, we have a problem with using proxy that changes the URI.
+    # An easy solution to this is to use the Nginx sub_filter like this:
+    sub_filter '"/login"' '"/cmi2w/login"';
 }

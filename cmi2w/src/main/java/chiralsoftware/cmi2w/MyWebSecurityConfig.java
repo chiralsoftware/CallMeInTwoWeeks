@@ -35,7 +35,8 @@ public class MyWebSecurityConfig {
         
 //        return http.build();
 
-
+// for info on redirecting depending on the user role:
+// https://www.baeldung.com/spring-redirect-after-login
         return http.
                 authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/style/**", "/", "/index.htm", "/login", "/signup").permitAll();
@@ -49,13 +50,6 @@ public class MyWebSecurityConfig {
                     LOG.info("I set the new success handler!");
                 }).
                 build();
-    }
-    
-    @Bean 
-    public UserDetailsService userDetailsService() {
-        final UserDetails user = User.withUsername("user").password("hello").authorities("user").build();
-        LOG.info("the fake user details service has been called!!!");
-        return new InMemoryUserDetailsManager(user);
     }
     
 }    
