@@ -7,6 +7,6 @@
         <div>Uh huh!</div>
         <h1>And the value is: </h1>
         <p th:text="${foo}">the time goes here </p>
-        <div th:substituteby="fragments/footer :: copy"></div>
+        <div th:replace="fragments/footer :: copy"></div>
     </body>
 </html>
