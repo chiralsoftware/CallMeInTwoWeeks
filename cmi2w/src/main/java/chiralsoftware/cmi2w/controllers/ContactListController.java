@@ -213,7 +213,6 @@ public class ContactListController {
         
         LOG.info("ok everything is sorted!");
 
-        model.addAttribute("bbCode", BbCode.getProcessor());
         model.addAttribute("dateUtility", new DateUtility());
 
         if (sort == null) {
