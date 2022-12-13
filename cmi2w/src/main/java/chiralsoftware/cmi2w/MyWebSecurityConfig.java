@@ -37,9 +37,15 @@ public class MyWebSecurityConfig {
 
 // for info on redirecting depending on the user role:
 // https://www.baeldung.com/spring-redirect-after-login
+
+// see this about new security config, plus a really great tour
+// of how to create a user details service:
+// https://www.youtube.com/watch?v=awcCiqBO36E
+// todo: implement all this like it's shown in the video
         return http.
+                csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**")).
                 authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/style/**", "/", "/index.htm", "/login", "/signup").permitAll();
+                    auth.requestMatchers("/style/**", "/", "/index.htm", "/login", "/signup", "/h2-console/**").permitAll();
                     auth.requestMatchers("/secure/**").hasAnyRole("USER");
 //                    auth.anyRequest().authenticated(); 
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
@@ -49,6 +55,7 @@ public class MyWebSecurityConfig {
                     customizer.successHandler(new MyAuthenticationSuccessHandler());
                     LOG.info("I set the new success handler!");
                 }).
+                headers(headers -> headers.frameOptions().sameOrigin()). // this is also needed for the h2 console
                 build();
     }
     

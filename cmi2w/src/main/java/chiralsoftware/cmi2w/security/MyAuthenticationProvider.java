@@ -21,7 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 /**
- * Authenticate users using JPA
+ * Authenticate users using JPA.
+ * This should be changed to use a UserDetailsService instead of an AuthenticationProvider.
  */
 @Component
 public class MyAuthenticationProvider implements AuthenticationProvider {
