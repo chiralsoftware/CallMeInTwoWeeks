@@ -9,4 +9,5 @@ location ^~ /cmi2w/ {
     # the default, we have a problem with using proxy that changes the URI.
     # An easy solution to this is to use the Nginx sub_filter like this:
     sub_filter '"/login"' '"/cmi2w/login"';
+    sub_filter '"/logout"' '"/cmi2w/logout"';
 }

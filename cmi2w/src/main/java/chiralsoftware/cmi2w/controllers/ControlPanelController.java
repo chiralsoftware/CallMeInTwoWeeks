@@ -8,10 +8,10 @@ import java.util.logging.Logger;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -27,10 +27,10 @@ public class ControlPanelController {
     private EntityManager entityManager;
 
     @GetMapping("/secure/controlpanel")
-    public ModelAndView controlPanelGet(@AuthenticationPrincipal JpaUserDetails userDetails) {
-        final ModelAndView modelAndView = new ModelAndView("/secure/controlpanel");
-        modelAndView.addObject("webUser", userDetails.getWebUser());
-        return modelAndView;
+    public String controlPanelGet(@AuthenticationPrincipal JpaUserDetails userDetails,
+            Model model) {
+        model.addAttribute("webUser", userDetails.getWebUser());
+        return "secure/controlpanel";
     }
 
     @Transactional
