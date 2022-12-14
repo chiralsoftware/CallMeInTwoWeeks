@@ -1,9 +1,9 @@
 package chiralsoftware.cmi2w.controllers;
 
-import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.Contact;
 import chiralsoftware.cmi2w.entities.ContactRecord;
 import chiralsoftware.cmi2w.entities.TemporaryImage;
+import chiralsoftware.cmi2w.security.JpaUserDetails;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -20,7 +20,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -52,7 +52,7 @@ public class ContactController {
     
     @Transactional
     @PostMapping(value = "/secure/contact-new.htm")
-    public String addContactPost(@ModelAttribute @Valid Contact contact, RedirectAttributes redirectAttributes,
+    public String addContactPost(Authentication authentication, @ModelAttribute @Valid Contact contact, RedirectAttributes redirectAttributes,
             BindingResult result) {
         if (entityManager == null)
             LOG.info("Oh no!  EntityManager was null!");
@@ -60,7 +60,16 @@ public class ContactController {
             LOG.info("there are errors in the submitted contact, so go back and do it again.");
             return "secure/contact-new";
         }
-        contact.setUserId(((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getUserId());
+        final Object principalObject = authentication.getPrincipal();
+        // the principalObject is actually the JpaUserDetails
+        LOG.info("The principal object is: " + principalObject + " which has type: " + principalObject.getClass());
+        if(! (principalObject instanceof JpaUserDetails)) {
+            throw new IllegalArgumentException("the provided principal object was class: " + 
+                    principalObject.getClass() + " but it should be: " + JpaUserDetails.class);
+        }
+        final JpaUserDetails jpaUserDetails= (JpaUserDetails) principalObject;
+        
+        contact.setUserId(jpaUserDetails.getUserId());
         LOG.info("Read to add new contact! " + contact);
 
         entityManager.persist(contact);
@@ -71,7 +80,7 @@ public class ContactController {
 
     @GetMapping(value = "/secure/contact-details-{contactId}.htm")
     @Transactional(readOnly = true)
-    public String details(@PathVariable Long contactId, Model model) {
+    public String details(Authentication authentication, @PathVariable Long contactId, Model model) {
         final Contact contact =
                 entityManager.find(Contact.class, contactId);
         model.addAttribute("contact", contact);
@@ -82,8 +91,7 @@ public class ContactController {
         model.addAttribute("contactRecords", contactRecords);
         model.addAttribute("dateUtility", new DateUtility());
         
-        model.addAttribute("dialoutEnabled", 
-                ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser().isDialoutActive());
+        model.addAttribute("dialoutEnabled", ((JpaUserDetails)authentication.getPrincipal()).isDialoutEnabled());
         return "secure/contact-details";
     }
 
@@ -159,7 +167,7 @@ public class ContactController {
     /** Add a contact record */
     @Transactional
     @PostMapping(value = "/secure/contact-details-{contactId}.htm")
-    public String contactRecordPost(@PathVariable Long contactId, @RequestParam("nextDate") String nextDateString,
+    public String contactRecordPost(Authentication authentication, @PathVariable Long contactId, @RequestParam("nextDate") String nextDateString,
             @RequestParam("notes") String notes,
             @RequestParam(value = "dialed", required = false) String dialed,
             @RequestParam(value = "voicemail", required = false) String voicemail,
@@ -176,7 +184,7 @@ public class ContactController {
         contactRecord.setContactTime(currentTimeMillis());
         try {
             final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            df.setTimeZone(((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getTimeZone());
+            df.setTimeZone(((JpaUserDetails) authentication.getPrincipal()).getTimeZone());
             final Date d = df.parse(nextDateString);
             LOG.info("The parsed date is: " + d);
             contactRecord.setNextContactTime(d.getTime());

@@ -1,6 +1,7 @@
 package chiralsoftware.cmi2w.controllers;
 
 import chiralsoftware.cmi2w.daos.MyAuthToken;
+import chiralsoftware.cmi2w.security.JpaUserDetails;
 import static java.lang.System.currentTimeMillis;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,7 +21,7 @@ public final class DateUtility {
     private static final Logger LOG = Logger.getLogger(DateUtility.class.getName());
 
     private TimeZone getTz() {
-        return ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getTimeZone();
+        return ((JpaUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getTimeZone();
     }
 
     /**

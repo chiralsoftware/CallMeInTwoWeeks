@@ -3,10 +3,12 @@ package chiralsoftware.cmi2w.controllers;
 import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.Contact;
 import chiralsoftware.cmi2w.entities.ContactRecord;
+import chiralsoftware.cmi2w.security.JpaUserDetails;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.logging.Logger;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,7 @@ public class ContactRecordController {
 
     @GetMapping(value="/secure/contactrecord-edit-{contactRecordId}.htm")
     @Transactional(readOnly = true)
-    public String contactRecordGet(@PathVariable Long contactRecordId, Model model) {
+    public String contactRecordGet(Authentication authentication, @PathVariable Long contactRecordId, Model model) {
         final ContactRecord contactRecord = entityManager.find(ContactRecord.class, contactRecordId);
         model.addAttribute("contactRecord", contactRecord);
         
@@ -41,8 +43,7 @@ public class ContactRecordController {
         model.addAttribute("dateUtility", new DateUtility());
 
         // this is really clunky
-        model.addAttribute("dialoutEnabled", 
-                ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser().isDialoutActive());
+        model.addAttribute("dialoutEnabled", ((JpaUserDetails)authentication.getPrincipal()).isDialoutEnabled());
         
         return "secure/contactrecord-edit";
     }
@@ -67,8 +68,6 @@ public class ContactRecordController {
             return "redirect:/secure/contact-details-{contactId}.htm";
         }
 
-        LOG.info("The new date is: " + nextDate);
-        LOG.info("The new notes: " + notes);
         final Date nextContactDate = DateUtility.parseInputString(nextDate);
         if(nextContactDate == null) {
             LOG.info("next contact date was null");
