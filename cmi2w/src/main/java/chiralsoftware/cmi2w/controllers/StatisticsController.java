@@ -34,7 +34,7 @@ public class StatisticsController {
     @PersistenceContext
     private EntityManager entityManager;    
     
-    @GetMapping("/secure/statistics.htm")
+    @GetMapping("/secure/statistics")
     public String getStatistics(Model model) {
         final LocalDateTime oneYearAgo = LocalDateTime.now().minusYears(1);
         final Query q = entityManager.

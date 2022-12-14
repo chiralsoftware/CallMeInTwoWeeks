@@ -12,7 +12,7 @@
 
             <h1>User control panel</h1>
 
-            <form action="#" th:object="${webUser}" method="post">
+            <form th:action="@{controlpanel}" th:object="${webUser}" method="post">
                 <fieldset>
                     <label for="asteriskExtension">Asterisk extension (channel)</label><br/>
                     <input type="text" placeholder="SIP/ext101" th:field="*{asteriskExtension}"/><br/>

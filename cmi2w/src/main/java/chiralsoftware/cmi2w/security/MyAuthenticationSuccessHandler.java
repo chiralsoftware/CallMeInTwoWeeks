@@ -30,13 +30,11 @@ public final class MyAuthenticationSuccessHandler implements AuthenticationSucce
         LOG.info("Here are the roles: " + roles);
         if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("admin"))) { 
             LOG.info("Authentication success, user is an admin user.");
-//            httpServletResponse.sendRedirect("admin/list-users.htm"); 
             redirectStrategy.sendRedirect(hsr, httpServletResponse, "admin/list-users.htm"); 
             return; 
         }
         if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("user"))) { 
             LOG.info("Authentication success. user is a normal user.");
-//            httpServletResponse.sendRedirect("secure/index.htm"); 
             redirectStrategy.sendRedirect(hsr, httpServletResponse, "secure/index.htm"); 
             return; 
         }

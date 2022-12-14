@@ -178,7 +178,6 @@ public class VariousBeans {
     // </editor-fold>
 
     static {
-        LOG.info("about to create the TextProcessor");
         processor = BBProcessorFactory.getInstance().create(new ByteArrayInputStream(Base64.getDecoder().decode(defaultConfig)));
         LOG.info("TextProcessor created");
 //         processor = BBProcessorFactory.getInstance().create();
@@ -186,7 +185,6 @@ public class VariousBeans {
 
     @Bean(name = "bbCode")
     public TextProcessor textProcessor() {
-        LOG.info("Returning the bbCode processor bean!");
         return processor;
     }
 

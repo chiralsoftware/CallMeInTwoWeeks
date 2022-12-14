@@ -1,13 +1,13 @@
 package chiralsoftware.cmi2w.controllers;
 
-import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.Contact;
 import chiralsoftware.cmi2w.entities.ContactRecord;
+import chiralsoftware.cmi2w.security.JpaUserDetails;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.logging.Logger;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -30,19 +30,18 @@ public class ContactRecordController {
 
     @GetMapping(value="/secure/contactrecord-edit-{contactRecordId}.htm")
     @Transactional(readOnly = true)
-    public String contactRecordGet(@PathVariable Long contactRecordId, Model model) {
+    public String contactRecordGet(@AuthenticationPrincipal JpaUserDetails userDetails, 
+            @PathVariable Long contactRecordId, Model model) {
         final ContactRecord contactRecord = entityManager.find(ContactRecord.class, contactRecordId);
         model.addAttribute("contactRecord", contactRecord);
         
         final Contact contact = entityManager.find(Contact.class, contactRecord.getContactId());
         model.addAttribute("contact", contact);
         
-//        model.addAttribute("bbCode", BbCode.getProcessor());
+        // this shouldn't be here!
         model.addAttribute("dateUtility", new DateUtility());
 
-        // this is really clunky
-        model.addAttribute("dialoutEnabled", 
-                ((MyAuthToken) SecurityContextHolder.getContext().getAuthentication()).getWebUser().isDialoutActive());
+        model.addAttribute("dialoutEnabled", userDetails.isDialoutEnabled());
         
         return "secure/contactrecord-edit";
     }
@@ -61,14 +60,10 @@ public class ContactRecordController {
         redirectAttributes.addAttribute("contactId", contact.getId());
         
         if("true".equalsIgnoreCase(delete)) {
-            LOG.info("Deleted was checked!");
             entityManager.remove(contactRecord);
-            // we go back to the contact
             return "redirect:/secure/contact-details-{contactId}.htm";
         }
 
-        LOG.info("The new date is: " + nextDate);
-        LOG.info("The new notes: " + notes);
         final Date nextContactDate = DateUtility.parseInputString(nextDate);
         if(nextContactDate == null) {
             LOG.info("next contact date was null");
@@ -77,12 +72,6 @@ public class ContactRecordController {
             contactRecord.setNextContactTime(nextContactDate.getTime());
         }
         contactRecord.setNotes(notes == null ? null : notes.trim());
-//        redirectAttributes.addAttribute("contact", contact);
-//        redirectAttributes.addAttribute("contactRecord", contactRecord);
-//
-//        redirectAttributes.addAttribute("bbCode", BbCode.getProcessor());
-//        redirectAttributes.addAttribute("dateUtility", new DateUtility());
-        
         redirectAttributes.addFlashAttribute("message", "Contact updated");
         return "redirect:/secure/contact-details-{contactId}.htm";
     }
