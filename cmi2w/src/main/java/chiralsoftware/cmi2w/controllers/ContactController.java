@@ -45,15 +45,15 @@ public class ContactController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @GetMapping(value = "/secure/contact-new.htm")
+    @GetMapping(value = "/secure/contact-new")
     public String addContactGet(@ModelAttribute Contact contact) {
         LOG.info("Adding a new contact");
         return "secure/contact-new";
     }
     
     @Transactional
-    @PostMapping(value = "/secure/contact-new.htm")
-    public String addContactPost(Authentication authentication, @ModelAttribute @Valid Contact contact, RedirectAttributes redirectAttributes,
+    @PostMapping(value = "/secure/contact-new")
+    public String addContactPost(@AuthenticationPrincipal JpaUserDetails userDetails, @ModelAttribute @Valid Contact contact, RedirectAttributes redirectAttributes,
             BindingResult result) {
         if (entityManager == null)
             LOG.info("Oh no!  EntityManager was null!");
@@ -61,16 +61,8 @@ public class ContactController {
             LOG.info("there are errors in the submitted contact, so go back and do it again.");
             return "secure/contact-new";
         }
-        final Object principalObject = authentication.getPrincipal();
-        // the principalObject is actually the JpaUserDetails
-        LOG.info("The principal object is: " + principalObject + " which has type: " + principalObject.getClass());
-        if(! (principalObject instanceof JpaUserDetails)) {
-            throw new IllegalArgumentException("the provided principal object was class: " + 
-                    principalObject.getClass() + " but it should be: " + JpaUserDetails.class);
-        }
-        final JpaUserDetails jpaUserDetails= (JpaUserDetails) principalObject;
-        
-        contact.setUserId(jpaUserDetails.getUserId());
+
+        contact.setUserId(userDetails.getUserId());
         LOG.info("Read to add new contact! " + contact);
 
         entityManager.persist(contact);

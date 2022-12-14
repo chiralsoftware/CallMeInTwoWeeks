@@ -3,11 +3,12 @@ package chiralsoftware.cmi2w.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Holds a temporary image upload,
@@ -20,7 +21,7 @@ public class TemporaryImage {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     
     /** No-args constructor, needed for JPA */
@@ -52,7 +53,7 @@ public class TemporaryImage {
     private String name;
     
     @Column
-    private long uploadTime = System.currentTimeMillis();
+    private long uploadTime = currentTimeMillis();
     
     @Column
     private long fileSize;

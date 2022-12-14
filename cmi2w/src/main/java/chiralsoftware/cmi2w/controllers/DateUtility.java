@@ -12,7 +12,9 @@ import java.util.logging.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * Simple class for formatting dates
+ * Simple class for formatting dates.
+ * This should be modernized by making it into a Bean, and also using the modern
+ * Java time classes rather than the old java.util.Date class.
  *
  */
 public final class DateUtility {

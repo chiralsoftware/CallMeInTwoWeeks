@@ -1,8 +1,8 @@
 package chiralsoftware.cmi2w.controllers;
 
-import chiralsoftware.cmi2w.daos.MyAuthToken;
 import chiralsoftware.cmi2w.entities.Contact;
 import chiralsoftware.cmi2w.entities.WebUser;
+import chiralsoftware.cmi2w.security.JpaUserDetails;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -18,7 +18,7 @@ import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.OriginateAction;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.springframework.beans.factory.annotation.Value;
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,17 +105,15 @@ public class ClickToDial {
         managerConnection.logoff();
     }
 
-    @PostMapping(value = "/secure/dial-{contactId}.htm")
+    @PostMapping("/secure/dial-{contactId}.htm")
     @ResponseBody
     @Transactional(readOnly = true)
-    public DialResult dial(@PathVariable Long contactId, @RequestParam(required = false, defaultValue = "main") String target) {
-        if (entityManager == null)
-            LOG.warning("The entityManager is null!");
+    public DialResult dial(@AuthenticationPrincipal JpaUserDetails userDetails,
+            @PathVariable Long contactId, @RequestParam(required = false, defaultValue = "main") String target) {
         if(managerFactory == null) 
             return new DialResult("999999", "dial out is not configured. See logs.", new java.util.Date().toString());
 
-        final WebUser webUser
-                = ((MyAuthToken) getContext().getAuthentication()).getWebUser();
+        final WebUser webUser = userDetails.getWebUser();
         if (webUser.getAsteriskContext() == null || webUser.getAsteriskContext().isEmpty()
                 || webUser.getAsteriskExtension() == null || webUser.getAsteriskExtension().isEmpty()) {
             return new DialResult("999999", "User not configured for dial-out", new java.util.Date().toString());

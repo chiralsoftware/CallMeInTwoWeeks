@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="secure/secure-template">
+      layout:decorate="~{secure/secure-template}">
     <head>
         <title>Contact Management</title>
     </head>
@@ -14,20 +14,20 @@
             </div>
 
             <div id="urgent" th:with="contacts=${urgent},contactTableName='Urgent'">
-                <div th:replace="fragments/contact-list :: contact-list"/>
+                <div th:replace="~{fragments/contact-list ::contact-list}"/>
             </div>
 
             <div id="most-recent" th:with="contacts=${mostRecent},contactTableName='Recent'">
-                <div th:replace="fragments/contact-list ::contact-list"/>
+                <div th:replace="~{fragments/contact-list ::contact-list}"/>
             </div>
 
 
             <div id="least-recent" th:with="contacts=${leastRecent},contactTableName='Old'">
-                <div th:replace="fragments/contact-list ::contact-list"/>
+                <div th:replace="~{fragments/contact-list ::contact-list}"/>
             </div>
 
             <div id="random" th:with="contacts=${random},contactTableName='Lucky'">
-                <div th:replace="fragments/contact-list ::contact-list"/>
+                <div th:replace="~{fragments/contact-list ::contact-list}"/>
             </div>
 
         </div>
