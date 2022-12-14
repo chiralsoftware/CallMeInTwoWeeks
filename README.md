@@ -1,8 +1,10 @@
 # CallMeInTwoWeeks
-This is the source code for Chiral Software's internal call tracking system. It's old, it's clunky, it's quirky, but it does work. 
-Even with the quirks, it's very effective and shows 
-how to implement click-to-dial with Asterisk. Chiral has used this system to track many thousands of calls and win many contracts.
-It also is a sample of a Spring Boot 3 application.
+This is the source code for Chiral Software's internal call tracking system. It has been in use for years and has been kept updated.
+This project is very useful on its own, and also gives good examples of Spring Boot, Spring Security, JPA,
+and implementing click-to-dial with Asterisk.
+
+It will work with any SQL database, including H2 for development, Postgres, MySQL and any other which has JDBC
+and JPA support.
 
 # Future plans
 
@@ -13,13 +15,15 @@ as Spring native becomes more mature.
 
 Add full text search using Lucene.
 
-Fix CSS quirks.
+Fix CSS and other quirks.
 
 # Update 2022
 
 This has been moved to Spring Boot 3, which means Spring Security 
 and Spring Framework 6, plus a move from `javax.servlet` to
 `jakarta.servlet`. This has been tested with Tomcat 10.
+
+It now uses the Spring Security remember-me feature.
 
 # Update 2021
 
