@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="secure/secure-template">
+      layout:decorate="~{secure/secure-template}">
     <head>
         <title>New contact</title>
     </head>
@@ -13,7 +13,7 @@
                     <h1 style="clear:both;">Add a contact</h1>
 
                     <div style="float:left;width: 45%;">
-                        <div th:replace="fragments/category-combo-box :: category-combo-box"/> 
+                        <div th:replace="~{fragments/category-combo-box :: category-combo-box}"/> 
                         
                         <label for="name">Name</label><br/>
                         <input style="width:95%;" type="text" th:field="*{name}"/><br/>

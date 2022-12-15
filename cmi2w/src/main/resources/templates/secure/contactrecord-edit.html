@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="secure/secure-template">
+      layout:decorate="~{secure/secure-template}">
     <head>
         <title  th:inline="text">Edit contact record for [[${contact.name}]]</title>
     </head>
@@ -10,7 +10,7 @@
         <div layout:fragment="content">
             <h1>Contact</h1>
             
-            <div th:replace="fragments/contact :: contact"/>
+            <div th:replace="~{fragments/contact :: contact}"/>
             
             <h1>Contact record</h1>
             

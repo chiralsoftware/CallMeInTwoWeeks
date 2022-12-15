@@ -6,8 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Logger;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -26,19 +27,20 @@ public final class MyAuthenticationSuccessHandler implements AuthenticationSucce
     @Override
     public void onAuthenticationSuccess(HttpServletRequest hsr, HttpServletResponse httpServletResponse, Authentication a) 
             throws IOException, ServletException {
-        final Set<String> roles = AuthorityUtils.authorityListToSet(a.getAuthorities());
-        LOG.info("Here are the roles: " + roles);
-        if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("admin"))) { 
+        final Set<String> roles = 
+                a.getAuthorities().stream().map(GrantedAuthority::getAuthority).
+                        map(String::toLowerCase).collect(toUnmodifiableSet());
+        if(roles.stream().anyMatch(s -> s.endsWith("admin"))) { 
             LOG.info("Authentication success, user is an admin user.");
             redirectStrategy.sendRedirect(hsr, httpServletResponse, "admin/list-users.htm"); 
             return; 
         }
-        if(roles.stream().anyMatch(s -> s.toLowerCase().endsWith("user"))) { 
+        if(roles.stream().anyMatch(s -> s.endsWith("user"))) { 
             LOG.info("Authentication success. user is a normal user.");
             redirectStrategy.sendRedirect(hsr, httpServletResponse, "secure/index.htm"); 
             return; 
         }
-        LOG.warning("Roles set was unexpected: " + roles);
+        LOG.warning("Roles set: " + roles + " was unexpected");
     }
     
 }
