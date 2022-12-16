@@ -4,8 +4,8 @@ After=syslog.target
 
 [Service]
 Environment=SPRING_CONFIG_LOCATION=/opt/cmi2w/application.properties
+ExecStart=/opt/jdk-19/bin/java -jar  /opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
 User=cmi2w
-ExecStart=/opt/jdk-17.0.4/bin/java -Dlogging.config=/opt/cmi2w/logback-spring.xml -Dlogging.path=/var/log/cmi2w -jar  /opt/cmi2w/cmi2w-0.0.1-SNAPSHOT.war
 SuccessExitStatus=143
 
 [Install]
