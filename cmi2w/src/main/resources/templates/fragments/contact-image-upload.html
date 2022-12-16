@@ -88,7 +88,7 @@
                     var xhr = new XMLHttpRequest();
                     // fixme - we should somehow use relative paths in this
                     dataToSend.append(CSRF_TOKEN_PARAMETER_NAME, CSRF_TOKEN);
-                    xhr.open("POST", "../upload-save.htm");
+                    xhr.open("POST", "../upload-save");
                     xhr.send(dataToSend);
                     document.getElementById('saveButton').value = "Saved";
                     document.getElementById('saveButton').disabled = true;
@@ -132,7 +132,7 @@
                     // there is an issue with Spring Security and multipart form upload, so one solution
                     // is to put the token in the URI params
 //                    xhr.open("POST", "../upload.htm?" + CSRF_TOKEN_PARAMETER_NAME + "=" + CSRF_TOKEN);
-                    xhr.open("POST", "../upload.htm");
+                    xhr.open("POST", "./upload");
                     var formData = new FormData();
                     formData.append('fileToUpload',
                             document.getElementById('fileToUpload').files[0]);
@@ -157,8 +157,9 @@
                     document.getElementById('cancelButton').disabled = false;
                     document.getElementById('saveButton').disabled = false;
                     document.getElementById('uploadButton').disabled = true;
-                    document.getElementById('uploadPreview').src = '../temporary-image-' +
-                            evt.target.responseText + '.htm';
+                    // this should check that the response text is actually an integer
+                    document.getElementById('uploadPreview').src = 'temporary-image-' +
+                            evt.target.responseText;
                     document.getElementById('progressNumber').innerHTML = 'uploaded';
                     document.getElementById('tempImageId').value =
                             evt.target.responseText;

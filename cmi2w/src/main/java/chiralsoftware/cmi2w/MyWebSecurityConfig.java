@@ -49,7 +49,9 @@ public class MyWebSecurityConfig {
         http.
                 csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**")).
                 authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/style/**", "/", "/index.htm", "/login", "/signup", "/h2-console/**").permitAll();
+                    auth.requestMatchers("/style/**", "/", 
+                            "/index.htm", 
+                            "/login", "/signup", "/h2-console/**").permitAll();
                     auth.requestMatchers("/secure/**").hasAnyRole("USER");
 //                    auth.anyRequest().authenticated(); 
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
