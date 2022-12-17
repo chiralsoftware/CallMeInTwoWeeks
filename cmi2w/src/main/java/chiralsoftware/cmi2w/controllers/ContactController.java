@@ -19,6 +19,8 @@ import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 import static org.apache.commons.lang3.StringUtils.trim;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -199,14 +201,14 @@ public class ContactController {
      * Display an image for a contact
      */
     @Transactional(readOnly = true) 
-    @GetMapping(value = "/secure/contact-image-{id}.htm")
+    @GetMapping(value = "/secure/contact-image-{id}")
     public ResponseEntity<byte[]> showContactImage(@PathVariable Long id) {
         final HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("Content-type", "image/png");
+        responseHeaders.add("Content-type", IMAGE_PNG_VALUE);
         final Contact contact = entityManager.find(Contact.class, id);
         if (contact == null) {
             LOG.warning("The contact for id: " + id + " returned NULL!");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(entityManager.find(Contact.class, id).getIcon(),
                 responseHeaders, HttpStatus.OK);

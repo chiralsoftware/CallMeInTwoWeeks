@@ -24,7 +24,7 @@
             <tbody>
                 <tr th:each="contact : ${contacts}">
                     <td th:if="${contact['icon']}">
-                        <img th:src="@{'contact-image-' + ${contact['id']} + '.htm'}"/>
+                        <img th:src="@{'contact-image-' + ${contact['id']}}"/>
                     </td>
 
                     <td th:unless="${contact['icon']}">

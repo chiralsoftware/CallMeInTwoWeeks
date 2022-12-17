@@ -50,14 +50,13 @@ public class MyWebSecurityConfig {
                 csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**")).
                 authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/style/**", "/", 
-                            "/index.htm", 
+                            "/index.htm", "/logout",
                             "/login", "/signup", "/h2-console/**").permitAll();
-                    auth.requestMatchers("/secure/**").hasAnyRole("USER");
-//                    auth.anyRequest().authenticated(); 
+                    auth.requestMatchers("/secure/**").
+                            hasRole("USER");
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                 }).
                 formLogin(customizer -> {
-//                    customizer.loginPage("/login"); // default page generated
                     customizer.successHandler(new MyAuthenticationSuccessHandler());
                     LOG.info("I set the new success handler!");
                 }).
