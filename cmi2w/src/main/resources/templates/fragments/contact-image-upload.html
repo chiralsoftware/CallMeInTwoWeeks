@@ -13,13 +13,11 @@
             <div class="uploadRow">
 
                 <p>Profile picture</p>
-                <img th:unless="${contact.icon}"  id="oldImage" 
-                     class="old" 
+                <img th:unless="${contact.icon}"  id="oldImage" class="old" 
                      src="../style/grey-silhouette.png" />
 
-                <img th:if="${contact.icon}"  id="oldImage" 
-                     class="old"
-                     th:src="@{'contact-image-' + ${contact.id} + '.htm'}" />
+                <img th:if="${contact.icon}"  id="oldImage" class="old"
+                     th:src="@{'contact-image-' + ${contact.id}}" />
 
                 <img id="uploadPreview" class="old"
                      style="display: none;" 
