@@ -15,7 +15,7 @@
     <name>cmi2w</name>
     <description>Call Me In Two Weeks call tracking system</description>
     <properties>
-        <java.version>20</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -57,10 +57,29 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency> -->
         <!--  This does not work with native-image but it is needed. Wait for Spring to fix this. -->
-        <dependency>
+        <!-- Looks like due to Groovy dependency, this will never work with Spring. Try switching to a real Java implementation -->
+<!--        <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>-->
+        <!-- Follow these instructions: 
+        https://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-to-a-maven-project
+        to install the zhanb layout jar in a local repository. This should let us run the entire project
+        as native code.
+        This user ran into the same thing:
+        https://www.digitalsanctuary.com/10minutemail/migrating-10minutemail-from-java-to-graalvm-native.html     
+        Download the jar from: https://github.com/zhanhb/thymeleaf-layout-dialect  
+        and install using:
+        mvn org.apache.maven.plugins:maven-install-plugin:3.1.1:install-file -Dfile=/tmp/thymeleaf-layout-dialect-3.2.0/thymeleaf-layout-dialect-3.2.0.jar  
+              -DgroupId=com.github.zhanb -DartifactId=thymeleaf-layout-dialect 
+              -Dversion=3.2.0 -Dpackaging=jar
+        -->
+        <dependency>
+            <groupId>com.github.zhanb</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>3.2.0</version>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -108,7 +127,9 @@
             <plugin>
                 <!-- To compile to native, make sure JAVA_HOME is set to an appropriate GraalVM with
                 native-image installed, and then run:
-                mvnw native:compile -Pnative -->
+                mvnw native:compile -Pnative 
+                If there is no mvnw create it using:
+                mvn -N wrapper:wrapper -Dmaven=3.9.1 -->
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
             </plugin>
