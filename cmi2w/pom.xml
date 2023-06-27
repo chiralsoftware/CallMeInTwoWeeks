@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>chiralsoftware</groupId>
@@ -28,11 +28,11 @@
         </dependency>
         <!-- It needs this if we are going to build an executable WAR, but that
         conflicts with native-image build. If you want to build the executable war, uncomment this. -->
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -40,6 +40,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
         <!--    <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,10 +59,10 @@
         </dependency> -->
         <!--  This does not work with native-image but it is needed. Wait for Spring to fix this. -->
         <!-- Looks like due to Groovy dependency, this will never work with Spring. Try switching to a real Java implementation -->
-<!--        <dependency>
+        <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
-        </dependency>-->
+        </dependency>
         <!-- Follow these instructions: 
         https://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-to-a-maven-project
         to install the zhanb layout jar in a local repository. This should let us run the entire project
@@ -74,11 +75,11 @@
               -DgroupId=com.github.zhanb -DartifactId=thymeleaf-layout-dialect 
               -Dversion=3.2.0 -Dpackaging=jar
         -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.github.zhanb</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>3.2.0</version>
-        </dependency>
+        </dependency>-->
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -101,7 +102,7 @@
         <dependency>
             <groupId>org.asteriskjava</groupId>
             <artifactId>asterisk-java</artifactId>
-            <version>3.38.0</version>
+            <version>3.39.0</version>
         </dependency>
         <!-- For the BBCode processor -->
         <dependency>
@@ -127,9 +128,7 @@
             <plugin>
                 <!-- To compile to native, make sure JAVA_HOME is set to an appropriate GraalVM with
                 native-image installed, and then run:
-                mvnw native:compile -Pnative 
-                If there is no mvnw create it using:
-                mvn -N wrapper:wrapper -Dmaven=3.9.1 -->
+                mvn native:compile -Pnative -->
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
             </plugin>

@@ -60,8 +60,12 @@ public class MyWebSecurityConfig {
                     customizer.successHandler(new MyAuthenticationSuccessHandler());
                     LOG.info("I set the new success handler!");
                 }).
-                userDetailsService(myUserDetailsService).
-                headers(headers -> headers.frameOptions().sameOrigin()); // this is also needed for the h2 console
+                headers(headersCustomizer -> { 
+                    headersCustomizer.frameOptions(frameOptions -> {
+                        frameOptions.sameOrigin();
+                    });
+                }).
+                userDetailsService(myUserDetailsService);
         if(! rememberMeKey.equals("changeme"))
                 http.rememberMe(rememberMeConfig -> {
                     rememberMeConfig.key(rememberMeKey);
