@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>chiralsoftware</groupId>
@@ -15,7 +15,7 @@
     <name>cmi2w</name>
     <description>Call Me In Two Weeks call tracking system</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>20</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -59,10 +59,10 @@
         </dependency> -->
         <!--  This does not work with native-image but it is needed. Wait for Spring to fix this. -->
         <!-- Looks like due to Groovy dependency, this will never work with Spring. Try switching to a real Java implementation -->
-        <dependency>
+<!--        <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- Follow these instructions: 
         https://stackoverflow.com/questions/4955635/how-to-add-local-jar-files-to-a-maven-project
         to install the zhanb layout jar in a local repository. This should let us run the entire project
@@ -75,11 +75,11 @@
               -DgroupId=com.github.zhanb -DartifactId=thymeleaf-layout-dialect 
               -Dversion=3.2.0 -Dpackaging=jar
         -->
-<!--        <dependency>
+        <dependency>
             <groupId>com.github.zhanb</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>3.2.0</version>
-        </dependency>-->
+        </dependency>
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -129,8 +129,17 @@
                 <!-- To compile to native, make sure JAVA_HOME is set to an appropriate GraalVM with
                 native-image installed, and then run:
                 mvn native:compile -Pnative -->
+                <!-- To fix issues related to slf4j in native images look at:
+            https://stackoverflow.com/questions/60654455/how-to-fix-try-avoiding-to-initialize-the-class-that-caused-initialization-wit
+                 -->
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <buildArgs>
+                        <buildArg>
+                        --initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder,org.slf4j.LoggerFactory,ch.qos.logback.classic.Logger,ch.qos.logback.core.spi.AppenderAttachableImpl,ch.qos.logback.core.status.StatusBase,ch.qos.logback.classic.Level,ch.qos.logback.core.status.InfoStatus,ch.qos.logback.classic.PatternLayout,ch.qos.logback.core.CoreConstants,ch.qos.logback</buildArg>
+                    </buildArgs>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
