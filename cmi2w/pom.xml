@@ -51,12 +51,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- This would be nice to use but it is not working with GraalVM native compiling yet -->
-        <!-- 
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
-        </dependency> -->
+        </dependency>
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
         <!--  This does not work with native-image but it is needed. Wait for Spring to fix this. -->
         <!-- Looks like due to Groovy dependency, this will never work with Spring. Try switching to a real Java implementation -->
 <!--        <dependency>
